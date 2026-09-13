@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Customer Complaints Analysis — Vaishnavi Tripathi</title>
+<meta name="description" content="A ten-year analysis of 467 banking customer complaints — volume, resolution quality, intake channel and geography — delivered as an interactive dashboard." />
+<meta name="author" content="Vaishnavi Tripathi" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2338bdf8'/><text x='50' y='68' font-size='52' font-family='Arial,sans-serif' font-weight='bold' text-anchor='middle' fill='%23061020'>VT</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<header class="nav is-stuck">
+  <div class="wrap nav__inner">
+    <a class="brand" href="../index.html" aria-label="Vaishnavi Tripathi — home">
+      <span class="brand__mark">VT</span>
+      <span>
+        <span class="brand__name">Vaishnavi Tripathi</span>
+        <span class="brand__role">Data Analyst</span>
+      </span>
+    </a>
+    <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#education">Education</a>
+      <a class="btn btn--primary btn--sm nav__cta" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="case-hero">
+  <div class="wrap">
+    <div class="crumbs reveal in">
+      <a href="../index.html">Home</a> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <a href="../index.html#projects">Projects</a> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <span>Customer Complaints Dashboard</span>
+    </div>
+
+    <span class="pill reveal in"><span class="dot"></span> SQL &middot; Data Analysis &middot; Dashboard Design</span>
+    <h1 class="reveal in">Customer Complaints <span class="grad-text">Analysis</span></h1>
+    <p class="case-hero__lede reveal in">Ten years of banking complaint records analysed end to end: profiled and cleaned in SQL, modelled into six service-quality KPIs, then delivered as an interactive dashboard where every chart filters every other. The question isn&rsquo;t <em>how many complaints did we get</em> &mdash; it&rsquo;s which products cause them, whether we resolve them well, and what changed over ten years.</p>
+
+    <div class="hero__actions reveal in">
+      <a class="btn btn--primary" href="demos/commbank-complaints-dashboard/index.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg> Open the live dashboard</a>
+      <a class="btn btn--ghost" href="../index.html#projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> All projects</a>
+    </div>
+
+    <div class="callout reveal in" style="margin-top:26px">
+      <div class="callout__k">Please note</div>
+      <p>A personal portfolio exercise built on a <strong>sample complaints dataset</strong>. It is not affiliated with or endorsed by Commonwealth Bank of Australia and contains no real customer data; the branding appears only to give the analysis a realistic context.</p>
+    </div>
+
+    <div class="case-meta reveal in">
+        <div><div class="case-meta__k">Role</div><div class="case-meta__v">Analyst &mdash; end to end</div></div>
+        <div><div class="case-meta__k">Dataset</div><div class="case-meta__v">467 complaints, 2011&ndash;2020</div></div>
+        <div><div class="case-meta__k">Tools</div><div class="case-meta__v">SQL, Excel &amp; dashboard design</div></div>
+    </div>
+
+    <figure class="case-figure reveal in">
+      <img src="../assets/projects/commbank-complaints-dashboard.png" alt="The finished dashboard: six service-quality KPIs across the top, then intake channel, ten-year trend and state distribution. Selecting any bar, state or year re-filters every other view and the record table beneath." />
+      <figcaption>The finished dashboard: six service-quality KPIs across the top, then intake channel, ten-year trend and state distribution. Selecting any bar, state or year re-filters every other view and the record table beneath.</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="case-body">
+    <div class="case-main">
+
+      <section class="reveal">
+        <h2>Overview</h2>
+        <p>Complaints are usually reported as a single number: how many arrived this month. That tells an operations manager almost nothing. It doesn&rsquo;t say which products generate them, whether they are being resolved well, where they cluster geographically, or whether the trend is improving.</p><p>I took a decade of complaint records and worked them properly &mdash; profiling, cleaning, defining the measures, then building a report where every element is a filter. Click a product, a state or a year and all six KPIs plus the underlying records recalculate against that selection, so a question like <em>&ldquo;why did disputes spike in Victoria in 2018?&rdquo;</em> is two clicks rather than a new report request.</p>
+      </section>
+
+      <section class="reveal">
+        <h2>The questions</h2>
+        <ul class="bullets">
+          <li><strong>Where do complaints come from?</strong> Which products, issue types, intake channels and states generate the volume &mdash; and is it concentrated or spread?</li>
+          <li><strong>Are we resolving them well?</strong> Timeliness, dispute rate, closure rate and whether the customer actually received relief.</li>
+          <li><strong>Is the picture improving?</strong> How volume and resolution quality moved across ten years, and whether any year broke the pattern.</li>
+          <li><strong>Can a non-analyst answer their own follow-up?</strong> The report had to let an operations lead drill into their own product or state without coming back to me.</li>
+        </ul>
+      </section>
+
+      <section class="reveal">
+        <h2>The data</h2>
+        <p>467 complaint records dated 26 August 2011 to 7 December 2020. Each row carries the product and sub-product, issue type, intake channel, state and postcode, the company&rsquo;s response, whether it was answered on time, and whether the consumer disputed the outcome.</p><p>Before any measure was defined I profiled every column &mdash; row counts, distinct values, null rates, date ranges and outliers &mdash; because a KPI built on an unprofiled column is a guess with a decimal point on it.</p>
+      </section>
+
+      <section class="reveal">
+        <h2>How I built it</h2>
+        <ul class="bullets">
+          <li><strong>Profiled the raw extract first.</strong> Counted rows, distinct values, nulls and date ranges per column in SQL, and checked the date span for gaps. This is what surfaced the inconsistent category labels and the open cases that would later have skewed every rate.</li>
+          <li><strong>Cleaned and standardised the categories.</strong> Product, sub-product, issue, channel, state and response values all arrived with variant spellings and casing. I mapped each to a single canonical label with lookup tables, so <em>one</em> category couldn&rsquo;t silently split into three across the report.</li>
+          <li><strong>Derived the analytical fields.</strong> Added year and month columns off the received date for trend work, a binary relief flag (monetary <em>or</em> non-monetary &mdash; explicitly excluding &ldquo;closed without relief&rdquo;, which is the easiest way to overstate the number), a digital-intake flag for web and email, and an open/closed status.</li>
+          <li><strong>Defined the six KPIs and wrote them down.</strong> Total volume, timely response rate, consumer disputed rate, relief provided rate, case closure rate and digital intake share. Each one got a written definition &mdash; including the decision to count in-progress cases in volume but exclude them from the closed count &mdash; so the same number means the same thing every time it&rsquo;s quoted.</li>
+          <li><strong>Aggregated along every dimension that mattered.</strong> Grouped by product, issue, channel, state and year, and cross-tabbed the resolution measures against each &mdash; which is where the interesting result sits, because a high dispute rate only means something once you know which product it belongs to.</li>
+          <li><strong>Validated before visualising.</strong> Reconciled every aggregate back to the 467-row source, checked that each breakdown summed to the total, and confirmed the rates against hand calculations on a sample. Nothing went on the dashboard that I couldn&rsquo;t trace back to a row.</li>
+          <li><strong>Designed the report around the questions, not the data.</strong> KPIs across the top for the headline read, then intake channel, trend and geography beneath. Every chart doubles as a filter, and each has a plain data table underneath it &mdash; because someone always wants the figures, not the picture.</li>
+        </ul>
+      </section>
+
+      <section class="reveal">
+        <h2>What it shows</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding__n">01</div><div><h4>Half of all complaints now arrive digitally</h4><p>Web and email make up just over 50% of intake, with referrals a distant second at 30%. That concentration is what makes digital channel monitoring worth resourcing &mdash; it is where the volume actually is.</p></div></div>
+          <div class="finding"><div class="finding__n">02</div><div><h4>Fast responses, but one in five still dispute</h4><p>94.4% of complaints were answered on time, yet 20.6% of customers disputed the outcome anyway. Timeliness and resolution quality are measuring two different things, and only one of them was being hit.</p></div></div>
+          <div class="finding"><div class="finding__n">03</div><div><h4>Only a quarter of cases end in relief</h4><p>24.2% closed with monetary or non-monetary relief; the majority closed with an explanation only. Read alongside the dispute rate, that is the most likely driver of customers pushing back.</p></div></div>
+          <div class="finding"><div class="finding__n">04</div><div><h4>Credit cards and mortgages lead the named products</h4><p>Credit cards account for 25.5% of complaints and mortgages 16.5% &mdash; the two products where a process fix would remove the most volume.</p></div></div>
+          <div class="finding"><div class="finding__n">05</div><div><h4>Volume is geographically concentrated and peaked in 2018</h4><p>NSW (31.0%) and Victoria (25.9%) together generate over half of all complaints, and 2018 was the high point of the ten-year series at 71 before volume eased back.</p></div></div>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Outcome</h2>
+        <p>The analysis turned a flat list of 467 rows into six defined, reconciled KPIs and a report that answers follow-up questions on its own. The clearest finding was the gap between <em>responding</em> and <em>resolving</em>: a 94% timeliness figure looks like a service success until it sits next to a 21% dispute rate and a 24% relief rate on the same screen.</p><p>The part I&rsquo;d defend hardest is the least visible &mdash; the profiling, the category standardisation and the written KPI definitions. That work is what lets someone challenge a number in a meeting and get a traceable answer instead of a shrug.</p>
+      </section>
+
+      <div class="case-nav">
+        <a class="btn btn--ghost btn--sm" href="predictive-modelling.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> Predictive Modelling</a>
+        <a class="btn btn--ghost btn--sm" href="pickmyuni.html">PickMyUni <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+
+    <aside class="case-aside">
+      <div class="aside-card reveal">
+        <h4>Built with</h4>
+        <div class="tags"><span class="tag">SQL</span><span class="tag">Data Profiling</span><span class="tag">Data Cleaning</span><span class="tag">KPI Definition</span><span class="tag">Exploratory Analysis</span><span class="tag">Dashboard Design</span><span class="tag">Data Visualisation</span><span class="tag">Excel</span></div>
+      </div>
+      <div class="aside-card reveal">
+        <h4>Links</h4>
+        <div style="display:grid;gap:10px">
+          <a class="btn btn--primary btn--sm" href="demos/commbank-complaints-dashboard/index.html" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg> Live dashboard</a>
+          <!-- TODO: paste the GitHub repo URL for this project -->
+          <a class="btn btn--ghost btn--sm" href="https://github.com/vaishnavitripathi091999" target="_blank" rel="noopener">Source code</a>
+          <a class="btn btn--ghost btn--sm" href="../index.html#projects">All projects</a>
+          <a class="btn btn--ghost btn--sm" href="../index.html#contact">Get in touch</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>&copy; <span data-year></span> Vaishnavi Tripathi &middot; Built and maintained by me.</p>
+    <div class="footer__links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../assets/Vaishnavi_Tripathi_CV.pdf" download>CV</a>
+      <a href="https://www.linkedin.com/in/vaishnavitripathi09" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:vaishnavitripathi091999@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

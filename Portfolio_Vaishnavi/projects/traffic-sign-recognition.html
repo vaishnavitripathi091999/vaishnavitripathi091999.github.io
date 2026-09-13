@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Traffic Sign Recognition & Obstacle Detection — Vaishnavi Tripathi</title>
+<meta name="description" content="A convolutional neural network classifying 43 traffic-sign types at 95% test accuracy, extended to real-time obstacle detection with OpenCV." />
+<meta name="author" content="Vaishnavi Tripathi" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2338bdf8'/><text x='50' y='68' font-size='52' font-family='Arial,sans-serif' font-weight='bold' text-anchor='middle' fill='%23061020'>VT</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+<header class="nav is-stuck">
+  <div class="wrap nav__inner">
+    <a class="brand" href="../index.html" aria-label="Vaishnavi Tripathi — home">
+      <span class="brand__mark">VT</span>
+      <span>
+        <span class="brand__name">Vaishnavi Tripathi</span>
+        <span class="brand__role">Data Analyst</span>
+      </span>
+    </a>
+    <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Skills</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#education">Education</a>
+      <a class="btn btn--primary btn--sm nav__cta" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="case-hero">
+  <div class="wrap">
+    <div class="crumbs reveal in">
+      <a href="../index.html">Home</a> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <a href="../index.html#projects">Projects</a> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      <span>Traffic Sign Recognition</span>
+    </div>
+
+    <span class="pill reveal in"><span class="dot"></span> Deep Learning &middot; CNN &middot; Computer Vision</span>
+    <h1 class="reveal in">Traffic Sign Recognition &amp; <span class="grad-text">Obstacle Detection</span></h1>
+    <p class="case-hero__lede reveal in">A convolutional neural network trained on roughly 50,000 images to classify 43 traffic-sign categories at 95% test accuracy &mdash; then extended past classification into real-time obstacle detection on live video with OpenCV.</p>
+
+    <div class="hero__actions reveal in">
+      <!-- TODO: paste the GitHub repo URL for this project -->
+      <a class="btn btn--primary" href="https://github.com/vaishnavitripathi091999" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.9c-2.78.62-3.37-1.22-3.37-1.22-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.6.69.49A10.03 10.03 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> View on GitHub</a>
+      <a class="btn btn--ghost" href="../index.html#projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> All projects</a>
+    </div>
+
+    <div class="case-meta reveal in">
+        <div><div class="case-meta__k">Type</div><div class="case-meta__v">Deep learning project</div></div>
+        <div><div class="case-meta__k">Dataset</div><div class="case-meta__v">~50,000 images &middot; 43 classes</div></div>
+        <div><div class="case-meta__k">Result</div><div class="case-meta__v">95% test accuracy</div></div>
+    </div>
+
+    <figure class="case-figure reveal in">
+      <img src="../assets/projects/TrafficSign.webp" alt="Process diagram: input video, frame extraction, colour segmentation, sign detection, then classification against the training database" />
+      <figcaption>Process followed for Traffic sign recognition.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="case-body">
+    <div class="case-main">
+
+      <section class="reveal">
+        <h2>Overview</h2>
+        <p>Traffic-sign recognition is deceptively hard. Signs are photographed at different distances, angles and light levels; several classes look nearly identical at low resolution; and the class distribution is heavily imbalanced.</p><p>I built this to work through a full computer-vision pipeline myself &mdash; preprocessing, architecture, augmentation, evaluation &mdash; and then the step most projects skip: taking a trained classifier and making it run on live video.</p>
+      </section>
+
+      <section class="reveal">
+        <h2>The questions</h2>
+        <ul class="bullets">
+          <li><strong>Can a CNN separate 43 similar classes reliably?</strong> Speed-limit signs differ by a single digit at low resolution.</li>
+          <li><strong>How much does augmentation actually help?</strong> The goal was to measure the generalisation gain, not assume it.</li>
+          <li><strong>Where does the model fail?</strong> Which classes get confused matters more than one headline accuracy number.</li>
+          <li><strong>Does it hold up outside the dataset?</strong> Static test accuracy and live-video performance are not the same thing.</li>
+        </ul>
+      </section>
+
+      <section class="reveal">
+        <h2>The data</h2>
+        <p>Roughly 50,000 labelled traffic-sign images across 43 categories, captured in varied lighting and weather conditions.</p><p>All images were resized and normalised to a consistent input shape, then split into training, validation and test sets with stratification so class balance was preserved &mdash; and the test set was held back from training and tuning entirely.</p>
+      </section>
+
+      <section class="reveal">
+        <h2>How I built it</h2>
+        <ul class="bullets">
+          <li><strong>Designed the network</strong> in Python &mdash; stacked convolution and pooling layers for feature extraction, dropout for regularisation, and a dense softmax head over the 43 classes.</li>
+          <li><strong>Applied augmentation</strong> &mdash; rotation, scaling and brightness adjustment &mdash; to simulate real camera conditions and reduce overfitting.</li>
+          <li><strong>Tracked training against validation</strong> throughout, so overfitting showed up early rather than at the end.</li>
+          <li><strong>Extended it to live video</strong> with OpenCV for real-time frame processing and bounding-box annotation.</li>
+        </ul>
+      </section>
+
+      <section class="reveal">
+        <h2>What it shows</h2>
+        <div class="findings">
+          <div class="finding"><div class="finding__n">01</div><div><h4>95% accuracy across 43 classes</h4><p>Strong performance on the held-out test set, given how visually similar several of the sign categories are.</p></div></div>
+          <div class="finding"><div class="finding__n">02</div><div><h4>Augmentation closed the generalisation gap</h4><p>Rotation, scaling and brightness adjustment measurably reduced overfitting and lifted validation performance over the un-augmented baseline.</p></div></div>
+          <div class="finding"><div class="finding__n">03</div><div><h4>Errors cluster, they don't scatter</h4><p>The confusion matrix showed misclassifications concentrated among visually similar signs &mdash; particularly speed-limit variants &mdash; pointing at where more data would pay off.</p></div></div>
+          <div class="finding"><div class="finding__n">04</div><div><h4>Live video is a different problem</h4><p>Moving from stills to real-time frames introduced motion blur, scale variation and frame-rate constraints that static accuracy simply doesn't capture.</p></div></div>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <h2>Outcome</h2>
+        <p>A working computer-vision pipeline: a CNN classifying 43 traffic-sign types at 95% test accuracy, wrapped in an OpenCV layer that processes live video and annotates detected objects in real time.</p><p>The wider lesson was about evaluation. A single accuracy figure hides the interesting part &mdash; the confusion matrix and the gap between static and live performance are what tell you whether a model is usable.</p>
+      </section>
+
+      <div class="case-nav">
+        <a class="btn btn--ghost btn--sm" href="pickmyuni.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> PickMyUni</a>
+        <a class="btn btn--ghost btn--sm" href="predictive-modelling.html">Predictive Modelling <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+
+    <aside class="case-aside">
+      <div class="aside-card reveal">
+        <h4>Built with</h4>
+        <div class="tags"><span class="tag">Python</span><span class="tag">CNN</span><span class="tag">Deep Learning</span><span class="tag">OpenCV</span><span class="tag">Computer Vision</span><span class="tag">Data Augmentation</span></div>
+      </div>
+      <div class="aside-card reveal">
+        <h4>Links</h4>
+        <div style="display:grid;gap:10px">
+          <!-- TODO: paste the GitHub repo URL for this project -->
+          <a class="btn btn--primary btn--sm" href="https://github.com/vaishnavitripathi091999" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49l-.01-1.9c-2.78.62-3.37-1.22-3.37-1.22-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9l-.01 2.82c0 .27.18.6.69.49A10.03 10.03 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg> Source code</a>
+          <a class="btn btn--ghost btn--sm" href="../index.html#projects">All projects</a>
+          <a class="btn btn--ghost btn--sm" href="../index.html#contact">Get in touch</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>&copy; <span data-year></span> Vaishnavi Tripathi &middot; Built and maintained by me.</p>
+    <div class="footer__links">
+      <a href="../index.html#projects">Projects</a>
+      <a href="../assets/Vaishnavi_Tripathi_CV.pdf" download>CV</a>
+      <a href="https://www.linkedin.com/in/vaishnavitripathi09" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:vaishnavitripathi091999@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

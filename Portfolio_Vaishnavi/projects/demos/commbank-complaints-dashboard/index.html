@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commonwealth Bank — Customer Complaints Dashboard</title>
+<style>
+:root{
+  color-scheme: light;
+  --brand:#FFE013;
+  --brand-ink:#1B1A17;
+  --surface-0:#F4F2EC;
+  --surface-1:#FFFFFF;
+  --surface-2:#FAF8F3;
+  --line:#DFDACB;
+  --line-strong:#B9B3A1;
+  --text-1:#1B1A17;
+  --text-2:#55524A;
+  --text-3:#726E63;
+  --mark:#A97900;
+  --mark-hi:#7A5600;
+  --mark-dim:#D8D3C4;
+  --seq-1:#FFE9A3;
+  --seq-2:#F7C63F;
+  --seq-3:#D19B00;
+  --seq-4:#9E7400;
+  --seq-5:#6B4F00;
+  --seq-0:#EDEAE0;
+  --grid:#E7E3D8;
+  --good:#0C7A3C;
+  --bad:#B3261E;
+  --shadow:0 1px 2px rgba(27,26,23,.06), 0 2px 10px rgba(27,26,23,.05);
+  --radius:14px;
+  --focus:#1B1A17;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --surface-0:#121210;
+    --surface-1:#1F1E1B;
+    --surface-2:#272621;
+    --line:#3A3833;
+    --line-strong:#565349;
+    --text-1:#F6F4EC;
+    --text-2:#C8C4B6;
+    --text-3:#9E9A8C;
+    --mark:#E3B637;
+    --mark-hi:#FFDC7A;
+    --mark-dim:#46443D;
+    --seq-1:#6B5000;
+    --seq-2:#96700A;
+    --seq-3:#C1941C;
+    --seq-4:#E3B637;
+    --seq-5:#FFDC7A;
+    --seq-0:#2E2D28;
+    --grid:#33322C;
+    --good:#4BC47E;
+    --bad:#FF8A80;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 2px 12px rgba(0,0,0,.3);
+    --focus:#FFE013;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --surface-0:#121210;
+  --surface-1:#1F1E1B;
+  --surface-2:#272621;
+  --line:#3A3833;
+  --line-strong:#565349;
+  --text-1:#F6F4EC;
+  --text-2:#C8C4B6;
+  --text-3:#9E9A8C;
+  --mark:#E3B637;
+  --mark-hi:#FFDC7A;
+  --mark-dim:#46443D;
+  --seq-1:#6B5000;
+  --seq-2:#96700A;
+  --seq-3:#C1941C;
+  --seq-4:#E3B637;
+  --seq-5:#FFDC7A;
+  --seq-0:#2E2D28;
+  --grid:#33322C;
+  --good:#4BC47E;
+  --bad:#FF8A80;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 2px 12px rgba(0,0,0,.3);
+  --focus:#FFE013;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--surface-0);
+  color:var(--text-1);
+  font:400 14px/1.45 "Inter","Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.01em}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-48px;z-index:60;background:var(--brand);color:#1B1A17;padding:10px 16px;border-radius:8px;font-weight:600;transition:top .15s}
+.skip:focus{top:12px}
+.wrap{max-width:1560px;margin:0 auto;padding-inline:16px;padding-block:0 40px}
+
+/* ---------- header ---------- */
+header.top{
+  background:var(--brand-ink);
+  border-bottom:4px solid var(--brand);
+}
+:root[data-theme="dark"] header.top,
+@media (prefers-color-scheme: dark){}
+.top-in{max-width:1560px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{width:44px;height:44px;flex:none;display:block}
+.titles{min-width:0;flex:1 1 260px}
+.titles h1{font-size:19px;color:#FFFFFF;line-height:1.2}
+.titles p{margin:2px 0 0;font-size:12.5px;color:#C9C5B8;letter-spacing:.02em}
+.top-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-size:12px;color:#E9E6DB;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.tbtn{
+  font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;
+  background:rgba(255,255,255,.08);color:#F2EFE4;border:1px solid rgba(255,255,255,.22);
+  padding:6px 12px;border-radius:999px;display:inline-flex;gap:6px;align-items:center;
+}
+.tbtn:hover{background:rgba(255,255,255,.16)}
+header.top :focus-visible{outline-color:var(--brand)}
+
+.disclaimer{
+  margin:16px 0 0;padding:10px 14px;font-size:12.5px;line-height:1.5;color:var(--text-2);
+  background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--line-strong);
+  border-radius:10px;
+}
+.disclaimer strong{color:var(--text-1);font-weight:650}
+
+/* ---------- filter bar ---------- */
+.filterbar{
+  background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:12px 14px;margin-top:12px;
+  display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;
+}
+.filterbar .flabel{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);padding-top:10px;flex:none}
+.fgroup{display:flex;gap:10px;flex-wrap:wrap;flex:1 1 auto}
+.dd{position:relative;flex:1 1 190px;min-width:170px;max-width:280px}
+.dd>button{
+  width:100%;font:inherit;text-align:left;cursor:pointer;
+  background:var(--surface-2);color:var(--text-1);
+  border:1px solid var(--line-strong);border-radius:10px;padding:9px 34px 9px 12px;
+  display:flex;align-items:baseline;gap:6px;
+}
+.dd>button:hover{border-color:var(--text-3)}
+.dd>button .k{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);flex:none}
+.dd>button .v{font-size:13.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dd>button::after{content:"";position:absolute;right:13px;top:calc(50% - 2px);border:5px solid transparent;border-top-color:var(--text-2)}
+.dd[data-open="true"]>button{border-color:var(--text-1)}
+.ddpanel{
+  position:absolute;z-index:40;top:calc(100% + 6px);left:0;min-width:100%;
+  background:var(--surface-1);border:1px solid var(--line-strong);border-radius:12px;
+  box-shadow:0 8px 28px rgba(27,26,23,.18);padding:6px;max-height:290px;overflow:auto;
+}
+.ddpanel[hidden]{display:none}
+.ddopt{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;cursor:pointer;white-space:nowrap;font-size:13.5px}
+.ddopt:hover,.ddopt[data-active="true"]{background:var(--surface-2)}
+.ddopt input{accent-color:var(--mark);width:15px;height:15px;flex:none;margin:0}
+.ddopt .cnt{margin-left:auto;color:var(--text-3);font-size:12px;font-variant-numeric:tabular-nums;padding-left:14px}
+.ddfoot{display:flex;gap:8px;padding:6px 4px 2px;border-top:1px solid var(--line);margin-top:4px}
+.linkbtn{font:inherit;font-size:12.5px;background:none;border:0;color:var(--text-2);text-decoration:underline;cursor:pointer;padding:4px 6px;border-radius:6px}
+.linkbtn:hover{color:var(--text-1)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex:1 1 100%;border-top:1px dashed var(--line);padding-top:10px}
+.chips:empty{display:none}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;
+  background:var(--surface-2);border:1px solid var(--line-strong);border-radius:999px;padding:4px 6px 4px 11px;
+}
+.chip b{font-weight:600}
+.chip .dim{color:var(--text-3);font-weight:500}
+.chip button{
+  font:inherit;line-height:1;cursor:pointer;background:var(--line);border:0;color:var(--text-1);
+  width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-size:13px;
+}
+.chip button:hover{background:var(--text-2);color:var(--surface-1)}
+.resetall{
+  font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;background:var(--brand-ink);color:#fff;
+  border:0;border-radius:999px;padding:6px 14px;
+}
+:root[data-theme="dark"] .resetall{background:var(--brand);color:#1B1A17}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:14px}
+.kpi{
+  background:var(--surface-1);border:1px solid var(--line);border-left:4px solid var(--brand);
+  border-radius:var(--radius);box-shadow:var(--shadow);padding:13px 14px 12px;min-width:0;
+}
+.kpi dt{font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);margin:0 0 7px;line-height:1.3}
+.kpi .val{font-size:29px;font-weight:650;line-height:1;letter-spacing:-.025em;font-variant-numeric:tabular-nums;display:block}
+.kpi .sub{margin-top:7px;font-size:12px;color:var(--text-2);display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.delta{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;display:inline-flex;gap:3px;align-items:center}
+.delta.up{color:var(--good)} .delta.down{color:var(--bad)} .delta.flat{color:var(--text-3)}
+
+/* ---------- grid ---------- */
+.board{display:grid;gap:12px;margin-top:12px;grid-template-columns:1fr 1.25fr 1.35fr;grid-template-areas:"cat trend map" "cat annual annual";align-items:stretch}
+.card{
+  background:var(--surface-1);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:14px 15px 12px;display:flex;flex-direction:column;min-width:0;
+}
+#card-cat{grid-area:cat} #card-trend{grid-area:trend} #card-map{grid-area:map} #card-annual{grid-area:annual}
+.card-hd{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.card-hd h2{font-size:14.5px;flex:1 1 auto;min-width:0}
+.card-hd .hint{display:block;font-weight:400;font-size:11.5px;color:var(--text-3);margin-top:3px;letter-spacing:0}
+.ctrls{display:flex;gap:6px;align-items:center;flex:none}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:2px;gap:2px}
+.seg button{font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;background:none;border:0;color:var(--text-2);padding:4px 9px;border-radius:6px}
+.seg button[aria-pressed="true"]{background:var(--brand-ink);color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:var(--brand);color:#1B1A17}
+select.mini{
+  font:inherit;font-size:12px;font-weight:600;background:var(--surface-2);color:var(--text-1);
+  border:1px solid var(--line);border-radius:8px;padding:5px 8px;cursor:pointer;
+}
+.tblbtn{font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;background:var(--surface-2);border:1px solid var(--line);color:var(--text-2);border-radius:8px;padding:5px 9px}
+.tblbtn[aria-expanded="true"]{background:var(--brand-ink);color:#fff;border-color:var(--brand-ink)}
+:root[data-theme="dark"] .tblbtn[aria-expanded="true"]{background:var(--brand);color:#1B1A17;border-color:var(--brand)}
+.plot{position:relative;flex:1 1 auto;min-height:0}
+.plot>svg.chartsvg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+.empty{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;color:var(--text-3);text-align:center;padding:20px}
+.empty[hidden]{display:none}
+
+/* ---------- data tables ---------- */
+.tblwrap{margin-top:10px;border-top:1px solid var(--line);padding-top:8px;max-height:290px;overflow:auto}
+.tblwrap[hidden]{display:none}
+table.dt{width:100%;border-collapse:collapse;font-size:12.5px}
+table.dt caption{text-align:left;font-size:11.5px;color:var(--text-3);padding-bottom:6px}
+table.dt th,table.dt td{text-align:right;padding:5px 7px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+table.dt th:first-child,table.dt td:first-child{text-align:left;white-space:normal}
+table.dt thead th{position:sticky;top:0;background:var(--surface-1);color:var(--text-3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;z-index:1}
+table.dt tbody tr[data-sel="true"]{background:var(--surface-2)}
+.rowbtn{font:inherit;font-size:12.5px;background:none;border:0;padding:2px 4px;margin:-2px -4px;border-radius:6px;cursor:pointer;color:var(--text-1);text-align:left;text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
+.rowbtn:hover{text-decoration-color:var(--text-1)}
+.rowbtn[aria-pressed="true"]{font-weight:700}
+.rowbtn[aria-pressed="true"]::before{content:"✓ ";color:var(--mark)}
+
+/* ---------- map ---------- */
+.mapbox{display:flex;gap:12px;flex:1 1 auto;min-height:0;align-items:stretch}
+.mapsvg{flex:1 1 auto;min-width:0;display:block;max-height:320px;height:100%;width:100%}
+.mapsvg path.st{stroke:var(--surface-1);stroke-width:2.5;stroke-linejoin:round;cursor:pointer;transition:opacity .12s}
+.mapsvg path.st:hover{stroke:var(--text-1);stroke-width:3}
+.mapsvg path.st[data-sel="true"]{stroke:var(--text-1);stroke-width:3.5}
+.mapsvg path.st[data-muted="true"]{opacity:.32}
+.mapsvg path.st:focus-visible{outline:none;stroke:var(--focus);stroke-width:4}
+.mapsvg line.ldr{stroke:var(--text-3);stroke-width:2}
+.mapsvg text{font-size:21px;font-weight:600;fill:var(--text-2);pointer-events:none;paint-order:stroke;stroke:var(--surface-1);stroke-width:4px;stroke-linejoin:round}
+.legend{flex:none;display:flex;flex-direction:column;justify-content:center;gap:3px;font-size:11px;color:var(--text-2);padding-block:4px}
+.legend .lgh{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:4px}
+.legend .lgi{display:flex;align-items:center;gap:7px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.legend .sw{width:15px;height:15px;border-radius:4px;border:1px solid var(--line-strong);flex:none}
+
+/* ---------- svg charts ---------- */
+.chartsvg .grid{stroke:var(--grid);stroke-width:1;shape-rendering:crispEdges}
+.chartsvg .axis{stroke:var(--line-strong);stroke-width:1;shape-rendering:crispEdges}
+.chartsvg text{fill:var(--text-3);font-size:11px;font-family:inherit}
+.chartsvg text.cat{fill:var(--text-2);font-size:12px}
+.chartsvg text.val{fill:var(--text-2);font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.chartsvg text.xlab{fill:var(--text-2);font-size:11.5px;font-weight:600}
+.chartsvg g.item{cursor:pointer}
+.chartsvg g.item rect,.chartsvg g.item circle{transition:opacity .12s}
+.chartsvg g.item:hover rect{opacity:.82}
+.chartsvg g.item:focus{outline:none}
+.chartsvg g.item:focus-visible rect,.chartsvg g.item:focus-visible circle{stroke:var(--focus);stroke-width:3}
+.chartsvg .ln{fill:none;stroke:var(--mark);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chartsvg .area{fill:var(--mark);opacity:.10}
+.chartsvg .pt{stroke:var(--surface-1);stroke-width:2}
+.chartsvg .hit{fill:transparent}
+
+/* ---------- records table ---------- */
+#card-records{margin-top:12px}
+.recwrap{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+table.rec{width:100%;border-collapse:collapse;font-size:12.5px;min-width:900px}
+table.rec th,table.rec td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.rec thead th{position:sticky;top:0;background:var(--surface-2);color:var(--text-2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;z-index:1;border-bottom:1px solid var(--line-strong)}
+table.rec tbody tr:nth-child(even){background:var(--surface-2)}
+table.rec td.num{font-variant-numeric:tabular-nums}
+.flag{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:11.5px}
+.flag .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.flag.yes .dot{background:var(--good)} .flag.no .dot{background:var(--bad)}
+.recfoot{margin-top:8px;font-size:12px;color:var(--text-3)}
+
+/* ---------- tooltip ---------- */
+#tip{
+  position:fixed;z-index:80;pointer-events:none;background:var(--brand-ink);color:#fff;
+  border-radius:9px;padding:8px 11px;font-size:12.5px;line-height:1.45;box-shadow:0 6px 22px rgba(0,0,0,.3);
+  max-width:260px;opacity:0;transition:opacity .1s;
+}
+#tip[data-show="true"]{opacity:1}
+#tip .tt{font-weight:600;margin-bottom:3px}
+#tip .tr{color:#D9D5C6;font-variant-numeric:tabular-nums}
+footer.note{margin-top:18px;font-size:12px;color:var(--text-3);line-height:1.6}
+footer.note strong{color:var(--text-2)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1180px){
+  .board{grid-template-columns:1fr 1fr;grid-template-areas:"cat trend" "map map" "annual annual"}
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .board{grid-template-columns:1fr;grid-template-areas:"cat" "trend" "map" "annual"}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi .val{font-size:25px}
+  .dd{max-width:none;flex:1 1 100%}
+  .filterbar .flabel{display:none}
+  .mapbox{flex-direction:column}
+  .legend{flex-direction:row;flex-wrap:wrap;gap:10px}
+  .titles h1{font-size:16.5px}
+  .plot{min-height:240px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to dashboard</a>
+<header class="top">
+  <div class="top-in">
+    <img class="logo" src="data:image/png;base64,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" alt="Commonwealth Bank logo" width="44" height="44">
+    <div class="titles">
+      <h1>Customer Complaints Dashboard</h1>
+      <p>Commonwealth Bank &middot; complaint records 2011&ndash;2020</p>
+    </div>
+    <div class="top-meta">
+      <span class="pill" id="reccount">467 of 467 complaints</span>
+      <button type="button" class="tbtn" id="themebtn" aria-pressed="false">
+        <span aria-hidden="true">◐</span><span id="themelbl">Dark mode</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="disclaimer"><strong>Personal portfolio project.</strong> Built from a sample complaints dataset for a data-visualisation exercise.
+  Not affiliated with, endorsed by, or containing real customer data from Commonwealth Bank of Australia. Logo shown for design context only.</p>
+
+  <section class="filterbar" aria-label="Dashboard filters">
+    <span class="flabel" id="flab">Filters</span>
+    <div class="fgroup" role="group" aria-labelledby="flab">
+      <div class="dd" id="dd-year"></div>
+      <div class="dd" id="dd-product"></div>
+      <div class="dd" id="dd-state"></div>
+    </div>
+    <div class="chips" id="chips" role="status" aria-live="polite" aria-label="Active filters"></div>
+  </section>
+
+  <main id="main">
+    <h2 class="sr-only">Key performance indicators</h2>
+    <dl class="kpis" id="kpis"></dl>
+
+    <div class="board">
+      <section class="card" id="card-cat" aria-labelledby="h-cat">
+        <div class="card-hd">
+          <h2 id="h-cat">By <span id="catname">request type</span><span class="hint">Select a bar to filter the dashboard</span></h2>
+          <div class="ctrls">
+            <label class="sr-only" for="catdim">Breakdown dimension</label>
+            <select class="mini" id="catdim">
+              <option value="request" selected>Request type</option>
+              <option value="issue">Issue</option>
+              <option value="product">Product</option>
+              <option value="subproduct">Sub-product</option>
+              <option value="response">Company response</option>
+            </select>
+            <button type="button" class="tblbtn" data-tbl="cat" aria-expanded="true" aria-controls="tbl-cat">Hide table</button>
+          </div>
+        </div>
+        <div class="plot" style="min-height:300px"><svg class="chartsvg" id="c-cat" role="img"></svg><p class="empty" hidden>No complaints match the current filters.</p></div>
+        <div class="tblwrap" id="tbl-cat"></div>
+      </section>
+
+      <section class="card" id="card-trend" aria-labelledby="h-trend">
+        <div class="card-hd">
+          <h2 id="h-trend">Complaint trend<span class="hint">Complaints received over time</span></h2>
+          <div class="ctrls">
+            <div class="seg" role="group" aria-label="Trend granularity">
+              <button type="button" data-gran="M" aria-pressed="false">Month</button>
+              <button type="button" data-gran="Q" aria-pressed="false">Quarter</button>
+              <button type="button" data-gran="Y" aria-pressed="true">Year</button>
+            </div>
+            <button type="button" class="tblbtn" data-tbl="trend" aria-expanded="true" aria-controls="tbl-trend">Hide table</button>
+          </div>
+        </div>
+        <div class="plot" style="min-height:220px"><svg class="chartsvg" id="c-trend" role="img"></svg><p class="empty" hidden>No complaints match the current filters.</p></div>
+        <div class="tblwrap" id="tbl-trend"></div>
+      </section>
+
+      <section class="card" id="card-map" aria-labelledby="h-map">
+        <div class="card-hd">
+          <h2 id="h-map">State-wise complaints<span class="hint">Select a state to filter the dashboard</span></h2>
+          <div class="ctrls"><button type="button" class="tblbtn" data-tbl="map" aria-expanded="true" aria-controls="tbl-map">Hide table</button></div>
+        </div>
+        <div class="mapbox">
+          <svg class="mapsvg" id="ausmap" viewBox="20 25 1000 825" role="group" aria-label="Schematic map of Australia, complaints by state"></svg>
+          <div class="legend" id="maplegend"></div>
+        </div>
+        <div class="tblwrap" id="tbl-map"></div>
+      </section>
+
+      <section class="card" id="card-annual" aria-labelledby="h-annual">
+        <div class="card-hd">
+          <h2 id="h-annual">Annual breakdown<span class="hint">Select a year to filter the dashboard</span></h2>
+          <div class="ctrls">
+            <div class="seg" role="group" aria-label="Annual measure">
+              <button type="button" data-measure="count" aria-pressed="true">Volume</button>
+              <button type="button" data-measure="disputed" aria-pressed="false">Disputed %</button>
+              <button type="button" data-measure="timely" aria-pressed="false">Timely %</button>
+            </div>
+            <button type="button" class="tblbtn" data-tbl="annual" aria-expanded="true" aria-controls="tbl-annual">Hide table</button>
+          </div>
+        </div>
+        <div class="plot" style="min-height:200px"><svg class="chartsvg" id="c-annual" role="img"></svg><p class="empty" hidden>No complaints match the current filters.</p></div>
+        <div class="tblwrap" id="tbl-annual"></div>
+      </section>
+    </div>
+
+    <section class="card" id="card-records" aria-labelledby="h-rec">
+      <div class="card-hd">
+        <h2 id="h-rec">Complaint records<span class="hint" id="rechint">All 467 records</span></h2>
+        <div class="ctrls"><button type="button" class="tblbtn" id="recmore" hidden>Show all</button></div>
+      </div>
+      <div class="recwrap"><table class="rec" id="rectbl"><caption class="sr-only">Individual complaint records matching the current filters</caption></table></div>
+      <p class="recfoot" id="recfoot"></p>
+    </section>
+
+    <footer class="note">
+      <p><strong>Source:</strong> <code>commbank complaints - data.xlsx</code> &mdash; 467 complaint records, 2011-08-26 to 2020-12-07, embedded in this file. No external data calls.
+      <strong>Map:</strong> schematic outline of Australian states/territories, shaded by complaint count; not to survey accuracy.
+      <strong>Assumptions:</strong> &ldquo;Relief provided&rdquo; = company response of monetary or non-monetary relief; &ldquo;Digital intake&rdquo; = Web or Email request type; <em>In progress</em> rows are counted in volume but excluded from the closed count.</p>
+    </footer>
+  </main>
+</div>
+<div id="tip" role="tooltip" aria-hidden="true"></div>
+<script id="cbdata" type="application/json">{"lut":{"product":["Bank services","Checking / savings","Credit card","Mortgage","Other"],"subproduct":["ATM access","Car loan","Debit card","Direct debit","Everyday transaction account","Fixed rate home loan","Foreign currency","Insurance","International transfer","Investment home loan","Line of credit","Low rate credit card","Online banking","Overdraft","Owner-occupier home loan","Personal loan","Platinum credit card","Rewards credit card","Savings account","Store credit card","Superannuation","Term deposit","Youth account"],"issue":["Account closed without notice","Delayed processing","Difficulty contacting the bank","Dispute not resolved","Fraud or unauthorised transaction","Incorrect fees or charges","Interest rate not as advertised","Poor customer service","Problem with a transaction","Statement error"],"request":["Email","Fax","Phone","Postal mail","Referral","Web"],"state":["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"],"response":["Closed with explanation","Closed with monetary relief","Closed with non-monetary relief","Closed without relief","In progress"],"status":["Closed","In progress"]},"rows":[["CBA-000001","2011-08-26",2011,3,14,7,4,4,0,1,0,0,5290],["CBA-000002","2011-12-07",2011,1,21,8,2,3,0,1,0,0,4551],["CBA-000003","2012-02-11",2012,2,16,7,1,1,0,0,0,0,2170],["CBA-000004","2012-02-16",2012,4,1,1,4,6,2,1,0,0,3150],["CBA-000005","2012-02-17",2012,4,7,7,2,7,0,1,0,0,6210],["CBA-000006","2012-02-26",2012,4,15,4,5,1,3,0,0,0,2250],["CBA-000007","2012-02-29",2012,4,6,6,4,3,0,1,0,0,4870],["CBA-000008","2012-03-04",2012,0,8,0,4,7,3,1,1,0,6100],["CBA-000009","2012-03-07",2012,1,21,8,4,3,0,1,1,0,4101],["CBA-000010","2012-03-08",2012,4,6,2,4,6,0,1,0,0,3550],["CBA-000011","2012-03-13",2012,4,13,2,4,3,1,1,0,0,4101],["CBA-000012","2012-03-23",2012,4,6,0,5,6,0,1,0,0,3350],["CBA-000013","2012-03-28",2012,0,2,3,2,2,0,1,1,0,810],["CBA-000014","2012-05-05",2012,3,10,5,3,1,0,1,0,0,2500],["CBA-000015","2012-05-10",2012,2,19,5,4,6,0,1,0,0,3150],["CBA-000016","2012-05-12",2012,4,1,8,5,7,4,1,0,1,6210],["CBA-000017","2012-05-14",2012,2,16,8,4,1,3,1,0,0,2250],["CBA-000018","2012-05-16",2012,4,20,5,4,5,0,1,0,0,7320],["CBA-000019","2012-05-19",2012,4,1,6,5,7,0,1,0,0,6210],["CBA-000020","2012-05-21",2012,1,18,4,2,1,0,1,0,0,2000],["CBA-000021","2012-05-22",2012,2,11,6,5,4,3,1,0,0,5290],["CBA-000022","2012-05-31",2012,4,1,2,5,3,0,0,0,0,4207],["CBA-000023","2012-06-06",2012,2,16,1,4,1,0,1,0,0,2170],["CBA-000024","2012-06-16",2012,3,10,8,4,1,1,1,0,0,2170],["CBA-000025","2012-07-05",2012,0,12,0,4,1,3,1,0,0,2170],["CBA-000026","2012-07-09",2012,1,22,3,4,1,0,1,0,0,2500],["CBA-000027","2012-07-31",2012,2,11,8,5,3,0,1,0,0,4870],["CBA-000028","2012-08-30",2012,2,16,2,5,3,0,1,0,0,4551],["CBA-000029","2012-09-08",2012,2,16,5,5,3,0,0,1,0,4101],["CBA-000030","2012-09-18",2012,2,16,9,5,1,0,1,0,0,2000],["CBA-000031","2012-09-25",2012,3,10,0,5,3,0,1,0,0,4207],["CBA-000032","2012-10-01",2012,2,11,3,5,6,2,1,0,0,3020],["CBA-000033","2012-10-11",2012,1,18,8,4,6,3,1,1,0,3150],["CBA-000034","2012-10-23",2012,2,16,3,5,1,1,1,0,0,2170],["CBA-000035","2012-10-27",2012,0,3,8,4,1,4,1,0,1,2170],["CBA-000036","2012-10-29",2012,2,19,0,4,3,0,0,0,0,4870],["CBA-000037","2012-10-31",2012,0,2,7,5,6,0,1,1,0,3121],["CBA-000038","2012-11-08",2012,4,7,8,4,1,0,1,0,0,2170],["CBA-000039","2012-11-10",2012,2,11,0,4,1,0,1,0,0,2250],["CBA-000040","2012-11-24",2012,4,15,0,5,7,0,1,0,0,6210],["CBA-000041","2012-12-05",2012,4,7,2,4,1,0,1,0,0,2150],["CBA-000042","2012-12-07",2012,0,12,5,4,6,2,1,0,0,3121],["CBA-000043","2012-12-12",2012,1,21,3,3,6,0,1,0,0,3350],["CBA-000044","2012-12-14",2012,3,9,1,5,3,0,1,0,0,4350],["CBA-000045","2012-12-27",2012,4,13,0,2,6,4,1,0,1,3000],["CBA-000046","2013-01-22",2013,2,17,6,5,0,0,1,0,0,2600],["CBA-000047","2013-01-22",2013,1,4,3,5,1,3,1,1,0,2600],["CBA-000048","2013-02-03",2013,4,13,3,5,4,0,1,0,0,5041],["CBA-000049","2013-02-13",2013,1,21,9,4,6,1,1,0,0,3000],["CBA-000050","2013-02-16",2013,2,16,6,3,1,0,1,0,0,2250],["CBA-000051","2013-02-24",2013,1,18,6,2,7,0,1,0,0,6017],["CBA-000052","2013-03-05",2013,1,22,6,1,4,0,1,0,0,5041],["CBA-000053","2013-03-12",2013,1,18,6,5,5,1,1,0,0,7000],["CBA-000054","2013-03-13",2013,4,15,8,5,2,3,1,0,0,800],["CBA-000055","2013-03-15",2013,3,5,1,3,7,0,1,1,0,6017],["CBA-000056","2013-04-09",2013,3,9,2,4,1,2,1,0,0,2010],["CBA-000057","2013-04-15",2013,3,10,7,5,1,0,1,0,0,2150],["CBA-000058","2013-05-07",2013,2,11,5,3,6,1,1,0,0,3000],["CBA-000059","2013-05-08",2013,0,3,6,3,3,0,1,1,0,4870],["CBA-000060","2013-05-12",2013,4,13,1,4,1,3,0,0,0,2170],["CBA-000061","2013-05-14",2013,4,15,3,5,1,1,1,1,0,2170],["CBA-000062","2013-05-17",2013,4,20,5,4,1,1,0,0,0,2600],["CBA-000063","2013-05-19",2013,1,22,0,5,3,3,1,1,0,4350],["CBA-000064","2013-05-25",2013,2,19,5,4,1,3,1,0,0,2150],["CBA-000065","2013-05-29",2013,1,22,9,2,6,1,1,0,0,3020],["CBA-000066","2013-06-09",2013,4,20,8,4,1,2,1,0,0,2170],["CBA-000067","2013-06-16",2013,3,10,3,4,6,1,1,0,0,3020],["CBA-000068","2013-07-13",2013,1,22,7,4,1,3,1,0,0,2500],["CBA-000069","2013-08-10",2013,0,8,9,4,6,4,1,1,1,3121],["CBA-000070","2013-08-17",2013,1,18,2,4,3,0,1,0,0,4101],["CBA-000071","2013-08-20",2013,4,20,1,5,6,0,1,0,0,3020],["CBA-000072","2013-08-21",2013,1,18,5,5,7,0,0,0,0,6100],["CBA-000073","2013-09-16",2013,2,17,1,4,6,0,1,0,0,3550],["CBA-000074","2013-09-23",2013,2,17,3,5,2,4,1,0,1,800],["CBA-000075","2013-09-25",2013,4,7,8,5,1,0,1,0,0,2000],["CBA-000076","2013-10-13",2013,4,6,1,5,1,0,1,0,0,2500],["CBA-000077","2013-10-13",2013,4,6,1,5,1,0,1,1,0,2150],["CBA-000078","2013-10-16",2013,3,5,0,5,1,0,0,0,0,2170],["CBA-000079","2013-10-23",2013,1,21,5,5,3,0,0,0,0,4870],["CBA-000080","2013-11-16",2013,4,20,3,2,6,0,1,0,0,3000],["CBA-000081","2013-11-17",2013,1,4,2,5,6,2,1,0,0,3350],["CBA-000082","2013-11-24",2013,2,19,7,4,3,0,1,0,0,4000],["CBA-000083","2013-11-26",2013,3,9,4,4,3,0,1,0,0,4350],["CBA-000084","2013-12-12",2013,4,6,5,2,1,3,1,0,0,2500],["CBA-000085","2013-12-16",2013,0,12,7,5,6,0,1,0,0,3121],["CBA-000086","2013-12-18",2013,1,21,1,2,6,3,1,0,0,3000],["CBA-000087","2013-12-25",2013,0,3,7,5,3,0,1,0,0,4101],["CBA-000088","2013-12-28",2013,4,1,7,5,5,3,1,0,0,7000],["CBA-000089","2014-01-13",2014,2,17,5,3,1,0,1,0,0,2150],["CBA-000090","2014-01-15",2014,3,14,0,4,7,1,1,0,0,6430],["CBA-000091","2014-01-29",2014,1,22,0,5,6,0,1,0,0,3020],["CBA-000092","2014-02-09",2014,0,8,0,5,1,2,1,0,0,2150],["CBA-000093","2014-02-16",2014,0,0,7,3,3,2,0,0,0,4000],["CBA-000094","2014-02-17",2014,2,19,5,3,1,4,1,1,1,2600],["CBA-000095","2014-03-03",2014,4,7,3,5,7,0,1,0,0,6000],["CBA-000096","2014-03-11",2014,2,16,6,5,0,2,1,0,0,2601],["CBA-000097","2014-03-20",2014,2,19,8,4,4,2,1,0,0,5290],["CBA-000098","2014-04-06",2014,3,5,1,5,7,3,1,0,0,6430],["CBA-000099","2014-04-10",2014,2,11,2,5,6,0,1,0,0,3350],["CBA-000100","2014-04-12",2014,2,19,8,4,6,0,1,0,0,3350],["CBA-000101","2014-04-14",2014,4,6,8,5,1,0,1,0,0,2600],["CBA-000102","2014-04-17",2014,2,17,1,5,3,4,1,0,1,4551],["CBA-000103","2014-04-20",2014,4,6,1,2,6,0,1,0,0,3020],["CBA-000104","2014-04-21",2014,4,13,7,4,7,0,1,0,0,6100],["CBA-000105","2014-04-24",2014,2,17,0,5,1,0,1,1,0,2010],["CBA-000106","2014-04-30",2014,4,7,1,4,1,0,1,0,0,2170],["CBA-000107","2014-05-22",2014,3,5,6,5,1,0,1,0,0,2170],["CBA-000108","2014-06-04",2014,1,21,0,5,3,0,1,0,0,4207],["CBA-000109","2014-06-05",2014,0,2,2,5,6,0,0,0,0,3550],["CBA-000110","2014-06-10",2014,0,3,2,4,6,0,1,0,0,3020],["CBA-000111","2014-06-12",2014,2,17,2,5,6,2,1,0,0,3121],["CBA-000112","2014-06-16",2014,3,9,7,5,3,3,0,0,0,4101],["CBA-000113","2014-06-24",2014,2,16,2,5,6,1,1,0,0,3350],["CBA-000114","2014-07-05",2014,0,12,8,5,1,1,1,0,0,2250],["CBA-000115","2014-07-17",2014,0,12,5,5,1,2,1,0,0,2600],["CBA-000116","2014-07-19",2014,1,21,9,5,3,0,1,1,0,4101],["CBA-000117","2014-07-27",2014,1,21,8,5,4,2,1,0,0,5000],["CBA-000118","2014-07-31",2014,1,22,3,5,1,0,1,0,0,2000],["CBA-000119","2014-08-03",2014,2,17,4,4,1,2,1,0,0,2010],["CBA-000120","2014-08-15",2014,3,10,9,5,3,0,1,0,0,4207],["CBA-000121","2014-08-18",2014,1,4,7,4,7,3,1,0,0,6017],["CBA-000122","2014-08-21",2014,2,19,0,5,7,0,1,1,0,6430],["CBA-000123","2014-08-26",2014,0,8,7,5,1,0,1,0,0,2010],["CBA-000124","2014-08-30",2014,4,13,7,5,6,2,1,0,0,3020],["CBA-000125","2014-09-03",2014,3,10,7,4,6,0,1,0,0,3150],["CBA-000126","2014-09-15",2014,0,2,8,5,3,1,1,0,0,4551],["CBA-000127","2014-09-16",2014,2,17,2,5,7,1,1,0,0,6000],["CBA-000128","2014-09-20",2014,1,21,6,4,1,3,1,0,0,2170],["CBA-000129","2014-09-24",2014,4,13,4,2,6,2,1,1,0,3000],["CBA-000130","2014-10-01",2014,2,17,8,5,6,0,1,0,0,3550],["CBA-000131","2014-10-10",2014,3,5,2,2,1,1,1,0,0,2250],["CBA-000132","2014-10-27",2014,2,11,8,5,6,4,1,0,1,3550],["CBA-000133","2014-11-09",2014,4,7,8,5,6,0,1,1,0,3550],["CBA-000134","2014-11-19",2014,3,14,8,5,6,0,1,0,0,3020],["CBA-000135","2014-12-06",2014,2,19,2,5,6,0,1,1,0,3550],["CBA-000136","2014-12-11",2014,2,17,6,2,6,1,0,0,0,3121],["CBA-000137","2014-12-17",2014,2,17,3,5,6,0,1,0,0,3020],["CBA-000138","2014-12-20",2014,0,8,4,5,3,0,1,0,0,4870],["CBA-000139","2014-12-22",2014,2,11,6,4,1,1,1,0,0,2600],["CBA-000140","2014-12-22",2014,4,15,6,5,1,4,1,0,1,2150],["CBA-000141","2015-01-15",2015,3,5,3,5,3,3,1,0,0,4350],["CBA-000142","2015-01-26",2015,0,2,3,5,6,2,1,0,0,3121],["CBA-000143","2015-01-26",2015,0,3,5,2,1,0,1,0,0,2170],["CBA-000144","2015-01-30",2015,3,10,8,5,6,3,1,0,0,3550],["CBA-000145","2015-02-09",2015,1,4,5,4,1,0,1,0,0,2000],["CBA-000146","2015-02-12",2015,1,4,2,2,3,1,1,0,0,4101],["CBA-000147","2015-02-19",2015,2,17,6,4,7,2,1,1,0,6000],["CBA-000148","2015-02-23",2015,0,12,9,4,1,3,1,0,0,2000],["CBA-000149","2015-03-14",2015,1,21,3,4,4,0,1,0,0,5108],["CBA-000150","2015-03-22",2015,0,8,6,5,0,0,1,0,0,2600],["CBA-000151","2015-04-14",2015,4,15,5,4,3,4,1,1,1,4350],["CBA-000152","2015-04-25",2015,1,22,6,4,1,3,0,0,0,2010],["CBA-000153","2015-05-20",2015,0,2,5,5,3,0,1,1,0,4350],["CBA-000154","2015-05-23",2015,2,17,8,5,6,0,1,1,0,3150],["CBA-000155","2015-05-24",2015,0,2,8,4,6,2,1,0,0,3350],["CBA-000156","2015-06-02",2015,2,17,6,1,7,0,1,0,0,6210],["CBA-000157","2015-06-16",2015,1,4,1,5,1,4,1,1,1,2500],["CBA-000158","2015-06-20",2015,0,8,2,3,7,0,1,0,0,6000],["CBA-000159","2015-06-24",2015,0,3,3,5,7,0,1,0,0,6100],["CBA-000160","2015-06-25",2015,4,1,5,4,6,0,1,0,0,3020],["CBA-000161","2015-06-26",2015,1,21,4,2,1,1,1,0,0,2150],["CBA-000162","2015-06-28",2015,4,1,7,5,6,4,1,0,1,3121],["CBA-000163","2015-07-07",2015,2,17,2,5,6,4,1,0,1,3350],["CBA-000164","2015-07-13",2015,1,18,6,5,1,0,1,1,0,2150],["CBA-000165","2015-07-27",2015,2,17,7,5,1,0,1,1,0,2170],["CBA-000166","2015-08-07",2015,1,4,9,2,6,0,1,0,0,3000],["CBA-000167","2015-08-17",2015,4,20,4,3,6,3,1,0,0,3350],["CBA-000168","2015-08-21",2015,2,19,6,2,1,0,1,0,0,2000],["CBA-000169","2015-08-27",2015,4,7,1,2,6,0,1,0,0,3020],["CBA-000170","2015-09-20",2015,3,14,5,5,4,0,1,1,0,5108],["CBA-000171","2015-09-30",2015,3,9,7,4,6,3,1,0,0,3000],["CBA-000172","2015-09-30",2015,4,13,4,4,3,0,1,0,0,4551],["CBA-000173","2015-10-17",2015,4,6,0,1,1,4,1,1,1,2500],["CBA-000174","2015-10-18",2015,2,16,4,4,5,4,1,1,1,7000],["CBA-000175","2015-10-26",2015,2,19,8,5,1,0,0,0,0,2150],["CBA-000176","2015-11-29",2015,3,5,1,5,1,0,1,0,0,2250],["CBA-000177","2015-12-06",2015,3,9,6,5,4,0,1,0,0,5108],["CBA-000178","2015-12-08",2015,4,15,2,4,3,1,1,0,0,4000],["CBA-000179","2015-12-23",2015,4,7,6,5,6,1,1,0,0,3350],["CBA-000180","2015-12-25",2015,2,19,3,5,1,0,1,0,0,2500],["CBA-000181","2015-12-29",2015,3,5,2,5,6,3,1,0,0,3150],["CBA-000182","2016-01-06",2016,3,14,1,1,6,0,1,0,0,3350],["CBA-000183","2016-01-12",2016,4,13,8,4,0,0,1,0,0,2612],["CBA-000184","2016-02-01",2016,2,19,5,4,6,0,0,0,0,3550],["CBA-000185","2016-02-05",2016,4,7,3,2,2,0,1,1,0,800],["CBA-000186","2016-02-10",2016,1,4,2,3,6,1,1,0,0,3150],["CBA-000187","2016-02-11",2016,2,17,8,5,6,2,1,0,0,3121],["CBA-000188","2016-03-02",2016,1,22,1,5,7,1,1,0,0,6430],["CBA-000189","2016-03-13",2016,4,6,7,5,1,0,1,0,0,2600],["CBA-000190","2016-03-19",2016,3,9,2,4,1,1,0,0,0,2250],["CBA-000191","2016-03-22",2016,2,16,1,5,6,0,1,1,0,3550],["CBA-000192","2016-03-27",2016,4,20,8,4,7,0,1,0,0,6017],["CBA-000193","2016-03-27",2016,4,15,5,5,3,4,1,1,1,4101],["CBA-000194","2016-03-28",2016,3,9,8,3,5,3,1,0,0,7010],["CBA-000195","2016-04-09",2016,1,4,2,1,7,1,1,0,0,6000],["CBA-000196","2016-04-20",2016,2,17,9,5,3,0,1,0,0,4101],["CBA-000197","2016-05-05",2016,2,11,3,4,6,3,1,0,0,3020],["CBA-000198","2016-05-14",2016,3,14,8,5,3,0,1,1,0,4101],["CBA-000199","2016-06-20",2016,2,11,7,5,4,0,1,0,0,5041],["CBA-000200","2016-06-24",2016,0,0,7,4,1,3,1,0,0,2170],["CBA-000201","2016-06-29",2016,4,1,2,5,4,0,1,0,0,5041],["CBA-000202","2016-07-03",2016,2,17,3,5,1,0,1,1,0,2250],["CBA-000203","2016-07-08",2016,2,16,3,5,4,0,1,0,0,5108],["CBA-000205","2016-07-14",2016,3,9,6,5,3,2,1,0,0,4350],["CBA-000204","2016-07-14",2016,4,6,1,2,7,3,1,1,0,6430],["CBA-000206","2016-07-25",2016,1,18,7,5,6,1,1,1,0,3550],["CBA-000207","2016-07-31",2016,3,5,8,2,1,1,1,1,0,2150],["CBA-000208","2016-08-06",2016,1,22,6,5,6,0,1,0,0,3020],["CBA-000209","2016-08-13",2016,4,13,6,4,3,0,1,0,0,4551],["CBA-000210","2016-08-16",2016,3,10,6,2,3,1,1,1,0,4000],["CBA-000211","2016-09-24",2016,3,10,0,5,3,3,1,0,0,4870],["CBA-000212","2016-09-28",2016,2,11,3,5,1,0,1,0,0,2500],["CBA-000213","2016-10-01",2016,0,3,0,5,6,0,1,0,0,3350],["CBA-000214","2016-10-05",2016,4,13,6,5,6,2,1,0,0,3000],["CBA-000215","2016-10-07",2016,2,19,5,5,3,0,1,0,0,4101],["CBA-000216","2016-10-08",2016,4,13,1,5,1,2,1,0,0,2170],["CBA-000217","2016-10-14",2016,0,12,3,1,7,0,1,0,0,6000],["CBA-000218","2016-10-24",2016,2,17,4,4,4,0,1,0,0,5290],["CBA-000219","2016-10-31",2016,2,19,1,2,3,3,1,0,0,4551],["CBA-000220","2016-11-01",2016,1,22,4,5,6,0,1,1,0,3020],["CBA-000221","2016-11-14",2016,4,6,8,5,7,1,1,0,0,6210],["CBA-000222","2016-11-25",2016,3,5,7,5,1,4,1,1,1,2170],["CBA-000223","2016-11-30",2016,4,6,1,5,7,3,1,0,0,6100],["CBA-000224","2016-12-02",2016,2,19,1,5,3,4,1,0,1,4551],["CBA-000225","2016-12-17",2016,4,15,7,4,3,2,1,0,0,4551],["CBA-000226","2016-12-20",2016,4,1,8,5,6,1,1,0,0,3121],["CBA-000227","2017-01-02",2017,1,4,9,4,1,0,1,0,0,2600],["CBA-000228","2017-01-17",2017,4,6,2,5,6,2,1,0,0,3150],["CBA-000229","2017-01-17",2017,1,22,5,2,6,4,1,0,1,3350],["CBA-000230","2017-01-18",2017,3,14,4,5,3,0,1,1,0,4000],["CBA-000231","2017-01-23",2017,4,20,5,5,3,2,1,0,0,4207],["CBA-000232","2017-01-25",2017,2,11,7,2,3,3,1,0,0,4207],["CBA-000233","2017-01-28",2017,1,4,8,3,5,0,1,0,0,7000],["CBA-000235","2017-02-16",2017,3,9,4,5,4,0,1,1,0,5041],["CBA-000234","2017-02-16",2017,0,0,5,4,6,0,1,0,0,3121],["CBA-000236","2017-02-24",2017,1,22,0,5,7,1,1,0,0,6100],["CBA-000237","2017-02-26",2017,2,17,7,5,1,2,1,0,0,2150],["CBA-000238","2017-03-05",2017,0,3,1,4,1,0,1,0,0,2010],["CBA-000239","2017-03-14",2017,4,15,9,4,4,3,1,0,0,5041],["CBA-000240","2017-03-17",2017,4,20,5,3,3,0,1,0,0,4551],["CBA-000241","2017-04-10",2017,2,17,4,4,3,2,1,0,0,4870],["CBA-000242","2017-04-12",2017,0,8,2,5,6,0,1,0,0,3000],["CBA-000243","2017-04-14",2017,1,18,1,2,6,0,1,0,0,3000],["CBA-000244","2017-04-21",2017,0,8,0,5,6,3,1,0,0,3020],["CBA-000245","2017-04-26",2017,2,19,7,5,5,0,1,1,0,7320],["CBA-000246","2017-04-29",2017,4,6,3,4,1,1,1,0,0,2170],["CBA-000247","2017-05-07",2017,3,5,0,5,7,0,1,1,0,6100],["CBA-000248","2017-05-10",2017,2,19,1,4,7,4,1,0,1,6210],["CBA-000249","2017-05-12",2017,0,8,8,5,4,0,1,0,0,5000],["CBA-000250","2017-05-15",2017,3,10,1,5,1,0,1,0,0,2010],["CBA-000251","2017-05-16",2017,3,14,4,5,7,0,1,0,0,6100],["CBA-000252","2017-05-16",2017,2,16,6,5,1,0,1,1,0,2010],["CBA-000253","2017-05-25",2017,1,21,7,5,6,0,1,1,0,3350],["CBA-000254","2017-06-05",2017,0,12,0,5,3,0,1,0,0,4101],["CBA-000255","2017-06-06",2017,2,19,3,2,6,4,1,0,1,3020],["CBA-000256","2017-06-08",2017,4,15,8,5,3,4,1,1,1,4000],["CBA-000257","2017-06-13",2017,1,18,3,5,7,0,1,0,0,6100],["CBA-000258","2017-07-01",2017,4,7,6,3,3,2,1,1,0,4551],["CBA-000259","2017-07-05",2017,3,14,3,5,4,1,1,1,0,5108],["CBA-000260","2017-07-20",2017,3,14,6,5,6,1,1,1,0,3350],["CBA-000261","2017-07-29",2017,4,15,8,2,0,0,1,1,0,2601],["CBA-000262","2017-08-12",2017,3,5,5,4,1,2,1,0,0,2250],["CBA-000263","2017-08-14",2017,3,14,6,0,1,1,1,0,0,2150],["CBA-000264","2017-08-17",2017,3,9,1,3,6,0,1,0,0,3550],["CBA-000265","2017-09-01",2017,2,17,3,3,6,1,1,0,0,3550],["CBA-000266","2017-09-03",2017,0,0,4,4,1,3,1,0,0,2150],["CBA-000267","2017-09-15",2017,4,6,9,5,1,3,1,0,0,2600],["CBA-000268","2017-09-19",2017,3,5,1,4,1,0,1,0,0,2150],["CBA-000269","2017-09-21",2017,4,7,8,4,4,3,1,0,0,5000],["CBA-000270","2017-09-24",2017,2,16,7,5,7,2,1,0,0,6017],["CBA-000271","2017-10-09",2017,2,11,9,5,1,1,1,0,0,2170],["CBA-000272","2017-10-20",2017,4,7,5,4,1,3,1,0,0,2170],["CBA-000273","2017-11-07",2017,4,13,1,5,6,0,1,1,0,3121],["CBA-000274","2017-11-11",2017,1,4,5,5,1,0,1,0,0,2010],["CBA-000275","2017-11-12",2017,3,9,7,4,1,0,1,0,0,2500],["CBA-000276","2017-11-13",2017,2,11,9,5,7,0,1,0,0,6100],["CBA-000277","2017-11-14",2017,0,8,1,5,1,3,1,0,0,2500],["CBA-000278","2017-11-29",2017,0,3,9,2,3,2,1,1,0,4207],["CBA-000279","2017-12-10",2017,0,2,1,5,3,0,1,0,0,4870],["CBA-000280","2017-12-17",2017,1,22,6,3,7,0,1,0,0,6430],["CBA-000281","2017-12-18",2017,1,21,6,5,1,0,1,0,0,2250],["CBA-000282","2017-12-19",2017,2,11,3,2,7,1,1,0,0,6000],["CBA-000283","2017-12-19",2017,1,21,1,4,6,1,1,0,0,3350],["CBA-000284","2017-12-27",2017,4,13,3,4,3,4,1,0,1,4551],["CBA-000285","2017-12-30",2017,2,16,4,3,1,1,1,0,0,2600],["CBA-000286","2018-01-07",2018,0,2,8,4,0,0,1,1,0,2612],["CBA-000287","2018-01-22",2018,2,16,8,4,3,0,1,0,0,4350],["CBA-000288","2018-01-25",2018,2,17,5,2,3,2,1,0,0,4350],["CBA-000289","2018-01-26",2018,0,0,0,4,6,3,1,0,0,3121],["CBA-000290","2018-02-06",2018,4,7,6,5,4,0,1,0,0,5041],["CBA-000291","2018-02-15",2018,4,6,0,5,6,1,0,0,0,3020],["CBA-000292","2018-02-16",2018,1,4,1,4,1,0,1,0,0,2000],["CBA-000293","2018-02-20",2018,1,22,2,5,1,2,1,0,0,2600],["CBA-000294","2018-02-24",2018,1,4,5,5,1,3,1,0,0,2500],["CBA-000295","2018-02-27",2018,4,15,6,4,6,0,1,0,0,3000],["CBA-000296","2018-02-28",2018,2,19,6,4,6,2,1,0,0,3000],["CBA-000297","2018-03-01",2018,3,10,6,4,4,1,1,1,0,5108],["CBA-000298","2018-03-08",2018,3,10,3,5,1,4,1,0,1,2500],["CBA-000299","2018-03-09",2018,2,19,1,5,6,0,1,1,0,3550],["CBA-000300","2018-03-10",2018,4,1,5,5,6,3,1,0,0,3550],["CBA-000301","2018-03-14",2018,3,9,6,5,4,0,1,0,0,5041],["CBA-000302","2018-03-16",2018,0,2,8,4,4,0,1,1,0,5041],["CBA-000303","2018-03-20",2018,1,18,2,5,7,3,1,1,0,6017],["CBA-000304","2018-03-21",2018,3,5,8,5,6,0,1,0,0,3000],["CBA-000305","2018-03-25",2018,3,14,9,5,1,0,1,0,0,2500],["CBA-000306","2018-03-26",2018,0,0,6,5,1,0,1,0,0,2150],["CBA-000307","2018-03-29",2018,2,11,6,5,4,1,1,0,0,5000],["CBA-000308","2018-03-31",2018,3,9,7,5,7,0,1,0,0,6100],["CBA-000309","2018-04-14",2018,2,11,1,3,1,4,1,0,1,2010],["CBA-000310","2018-04-24",2018,2,17,9,4,6,0,1,0,0,3121],["CBA-000311","2018-05-14",2018,1,22,0,5,4,0,1,1,0,5000],["CBA-000312","2018-05-23",2018,2,17,5,5,1,2,1,0,0,2500],["CBA-000313","2018-06-03",2018,2,19,7,5,6,0,1,0,0,3121],["CBA-000314","2018-06-06",2018,4,20,0,2,3,0,1,0,0,4207],["CBA-000315","2018-06-08",2018,4,6,9,4,3,0,1,0,0,4350],["CBA-000316","2018-06-10",2018,1,22,1,4,1,0,1,0,0,2000],["CBA-000317","2018-06-12",2018,0,2,1,5,6,1,1,0,0,3020],["CBA-000318","2018-06-18",2018,4,1,7,4,3,1,1,0,0,4000],["CBA-000319","2018-06-24",2018,4,7,2,4,7,1,1,1,0,6000],["CBA-000320","2018-06-27",2018,2,16,7,2,1,0,1,0,0,2250],["CBA-000321","2018-07-01",2018,2,16,2,5,1,0,1,0,0,2500],["CBA-000322","2018-07-07",2018,4,13,3,5,6,0,0,0,0,3550],["CBA-000323","2018-07-14",2018,2,17,0,5,7,0,1,0,0,6000],["CBA-000324","2018-07-18",2018,3,5,0,4,0,0,1,0,0,2900],["CBA-000325","2018-07-25",2018,4,7,9,3,1,2,1,0,0,2000],["CBA-000326","2018-08-01",2018,2,17,7,4,3,0,1,0,0,4207],["CBA-000327","2018-08-05",2018,1,18,1,5,1,0,1,0,0,2600],["CBA-000328","2018-08-12",2018,3,5,4,5,6,4,1,0,1,3020],["CBA-000329","2018-08-14",2018,3,5,3,5,1,0,1,0,0,2000],["CBA-000330","2018-08-14",2018,3,9,5,4,6,0,1,0,0,3020],["CBA-000331","2018-08-19",2018,3,10,9,2,5,0,0,1,0,7010],["CBA-000332","2018-09-03",2018,2,17,9,5,6,0,1,0,0,3550],["CBA-000333","2018-09-15",2018,4,15,4,5,1,0,1,0,0,2600],["CBA-000334","2018-09-16",2018,4,20,3,2,1,0,1,0,0,2010],["CBA-000335","2018-09-20",2018,1,18,2,4,0,0,1,1,0,2601],["CBA-000336","2018-09-21",2018,4,7,8,5,7,4,1,0,1,6210],["CBA-000337","2018-09-22",2018,4,6,2,4,1,1,1,0,0,2000],["CBA-000338","2018-10-06",2018,1,22,5,5,6,0,1,0,0,3000],["CBA-000339","2018-10-06",2018,1,18,0,2,1,2,1,0,0,2500],["CBA-000340","2018-10-17",2018,2,11,7,4,1,1,1,0,0,2500],["CBA-000341","2018-10-18",2018,2,16,3,5,5,4,1,0,1,7250],["CBA-000342","2018-10-20",2018,4,1,3,4,6,3,1,1,0,3550],["CBA-000343","2018-10-28",2018,2,11,4,2,3,1,1,1,0,4207],["CBA-000344","2018-11-02",2018,0,12,2,5,0,0,1,0,0,2600],["CBA-000345","2018-11-07",2018,1,18,0,2,1,0,1,0,0,2600],["CBA-000346","2018-11-12",2018,1,4,8,4,6,0,1,0,0,3000],["CBA-000347","2018-11-15",2018,4,13,9,5,4,0,1,0,0,5000],["CBA-000348","2018-11-17",2018,4,6,1,4,1,3,1,0,0,2010],["CBA-000349","2018-11-18",2018,4,1,7,4,1,3,1,0,0,2600],["CBA-000350","2018-11-25",2018,4,6,9,4,4,4,1,0,1,5290],["CBA-000351","2018-12-03",2018,4,13,3,5,7,2,0,1,0,6430],["CBA-000352","2018-12-06",2018,3,10,6,2,1,3,1,0,0,2600],["CBA-000353","2018-12-06",2018,4,7,1,5,3,2,1,1,0,4000],["CBA-000354","2018-12-08",2018,4,1,5,3,6,1,1,0,0,3121],["CBA-000355","2018-12-08",2018,1,21,1,5,6,0,1,0,0,3121],["CBA-000356","2018-12-08",2018,2,16,3,4,1,3,1,0,0,2500],["CBA-000357","2019-01-15",2019,4,13,6,5,6,3,1,0,0,3150],["CBA-000358","2019-01-19",2019,1,22,9,5,6,0,1,0,0,3020],["CBA-000359","2019-01-24",2019,3,14,6,5,3,0,1,0,0,4101],["CBA-000360","2019-02-04",2019,2,19,7,5,1,3,0,0,0,2170],["CBA-000361","2019-02-10",2019,0,0,7,2,3,0,1,1,0,4870],["CBA-000362","2019-02-11",2019,3,10,6,4,1,0,1,0,0,2010],["CBA-000363","2019-02-16",2019,4,1,3,5,1,0,1,0,0,2010],["CBA-000364","2019-02-18",2019,3,9,0,5,6,0,1,0,0,3121],["CBA-000365","2019-03-04",2019,3,9,1,4,6,0,1,0,0,3350],["CBA-000366","2019-03-06",2019,2,11,5,4,1,3,1,1,0,2250],["CBA-000367","2019-03-08",2019,4,1,2,4,1,0,1,1,0,2150],["CBA-000368","2019-03-10",2019,4,7,1,5,3,0,1,0,0,4101],["CBA-000369","2019-03-13",2019,4,7,7,5,6,0,1,1,0,3121],["CBA-000370","2019-03-23",2019,4,13,9,5,6,3,1,0,0,3550],["CBA-000371","2019-03-25",2019,1,4,7,5,1,2,1,0,0,2600],["CBA-000372","2019-03-29",2019,2,19,2,4,7,3,1,0,0,6000],["CBA-000373","2019-04-01",2019,4,15,6,4,1,0,1,0,0,2150],["CBA-000374","2019-04-13",2019,4,13,8,4,3,0,1,0,0,4207],["CBA-000375","2019-04-16",2019,0,0,2,3,3,0,1,0,0,4870],["CBA-000376","2019-05-12",2019,2,16,9,5,1,0,1,0,0,2150],["CBA-000377","2019-05-13",2019,0,0,0,2,1,2,1,0,0,2000],["CBA-000378","2019-05-17",2019,2,16,1,5,6,0,1,0,0,3000],["CBA-000379","2019-05-18",2019,4,15,7,4,1,3,1,1,0,2500],["CBA-000381","2019-05-22",2019,0,0,2,5,1,1,1,1,0,2600],["CBA-000380","2019-05-22",2019,1,22,4,5,0,0,1,0,0,2601],["CBA-000382","2019-05-28",2019,2,11,9,3,6,0,1,1,0,3121],["CBA-000383","2019-06-08",2019,4,6,4,5,4,0,1,0,0,5290],["CBA-000384","2019-06-09",2019,0,3,2,3,3,3,1,1,0,4870],["CBA-000385","2019-06-13",2019,2,19,3,5,3,0,1,0,0,4870],["CBA-000386","2019-07-01",2019,4,1,3,3,7,0,1,0,0,6017],["CBA-000387","2019-07-04",2019,4,1,7,5,5,0,1,0,0,7010],["CBA-000388","2019-07-15",2019,3,5,9,2,6,0,1,0,0,3121],["CBA-000389","2019-07-16",2019,2,19,3,4,7,1,1,0,0,6100],["CBA-000390","2019-07-16",2019,1,4,8,5,3,0,1,1,0,4207],["CBA-000391","2019-07-18",2019,1,4,3,3,6,0,1,1,0,3121],["CBA-000392","2019-07-25",2019,0,8,3,4,3,0,1,0,0,4207],["CBA-000393","2019-07-31",2019,4,20,1,2,1,2,1,0,0,2500],["CBA-000394","2019-08-05",2019,0,12,7,4,3,0,1,0,0,4000],["CBA-000395","2019-08-17",2019,1,4,2,4,6,4,1,0,1,3000],["CBA-000396","2019-08-25",2019,4,7,1,5,6,0,1,0,0,3020],["CBA-000397","2019-08-29",2019,1,22,4,5,1,0,1,0,0,2500],["CBA-000398","2019-09-03",2019,4,15,6,4,6,2,1,0,0,3121],["CBA-000399","2019-09-13",2019,0,3,0,5,1,0,1,0,0,2150],["CBA-000400","2019-09-15",2019,0,12,9,4,6,0,1,0,0,3121],["CBA-000401","2019-09-15",2019,3,9,9,2,3,0,1,0,0,4870],["CBA-000402","2019-09-16",2019,4,15,9,4,3,0,1,0,0,4000],["CBA-000403","2019-10-06",2019,3,9,1,2,1,0,1,0,0,2010],["CBA-000404","2019-10-11",2019,4,1,8,4,3,0,1,0,0,4000],["CBA-000405","2019-10-16",2019,2,19,7,5,1,0,1,1,0,2250],["CBA-000406","2019-10-18",2019,4,6,3,2,6,4,1,1,1,3020],["CBA-000407","2019-10-20",2019,3,9,9,4,6,0,1,0,0,3000],["CBA-000408","2019-10-20",2019,3,14,9,5,1,3,1,0,0,2000],["CBA-000409","2019-10-22",2019,3,10,2,2,3,0,1,0,0,4207],["CBA-000410","2019-10-24",2019,0,0,7,4,3,3,1,0,0,4000],["CBA-000411","2019-10-30",2019,4,1,0,5,1,3,1,0,0,2500],["CBA-000412","2019-11-02",2019,3,5,3,5,0,0,1,0,0,2600],["CBA-000413","2019-11-11",2019,1,4,4,3,1,0,1,1,0,2170],["CBA-000414","2019-11-26",2019,0,3,3,5,3,0,1,1,0,4350],["CBA-000415","2019-11-30",2019,1,22,6,2,1,4,1,0,1,2600],["CBA-000416","2019-12-12",2019,0,3,9,5,1,0,1,0,0,2000],["CBA-000417","2019-12-23",2019,4,20,3,5,1,0,1,0,0,2170],["CBA-000418","2019-12-23",2019,2,19,4,5,1,0,1,0,0,2600],["CBA-000419","2020-01-09",2020,0,12,6,5,1,0,1,1,0,2010],["CBA-000420","2020-01-14",2020,1,22,3,3,3,0,1,1,0,4551],["CBA-000421","2020-01-24",2020,4,13,5,4,3,1,1,0,0,4551],["CBA-000422","2020-02-02",2020,3,14,5,3,3,0,1,1,0,4207],["CBA-000424","2020-02-06",2020,1,21,6,5,0,3,1,0,0,2900],["CBA-000423","2020-02-06",2020,3,10,3,5,1,4,1,1,1,2500],["CBA-000425","2020-02-12",2020,1,22,9,5,6,0,1,0,0,3020],["CBA-000426","2020-02-24",2020,2,19,6,4,1,0,1,0,0,2600],["CBA-000427","2020-02-26",2020,4,20,7,4,1,1,1,0,0,2500],["CBA-000428","2020-03-09",2020,3,14,2,5,1,1,1,0,0,2150],["CBA-000429","2020-03-10",2020,4,15,3,5,1,0,1,1,0,2010],["CBA-000430","2020-03-11",2020,1,4,4,4,6,0,1,0,0,3020],["CBA-000431","2020-03-15",2020,1,4,2,4,7,0,1,1,0,6210],["CBA-000432","2020-03-16",2020,1,21,1,5,6,2,1,0,0,3150],["CBA-000433","2020-03-19",2020,2,11,6,5,1,0,1,0,0,2010],["CBA-000434","2020-03-28",2020,2,17,3,5,6,0,1,0,0,3020],["CBA-000435","2020-03-30",2020,4,6,7,5,3,0,1,0,0,4870],["CBA-000436","2020-04-13",2020,2,19,8,4,3,3,1,0,0,4101],["CBA-000437","2020-04-20",2020,4,13,4,5,3,0,1,1,0,4101],["CBA-000438","2020-04-22",2020,2,17,0,5,3,1,1,0,0,4350],["CBA-000439","2020-04-27",2020,0,12,1,4,4,3,1,0,0,5000],["CBA-000440","2020-05-03",2020,2,16,8,4,4,4,0,0,1,5041],["CBA-000441","2020-05-13",2020,2,19,0,3,3,0,1,0,0,4551],["CBA-000442","2020-06-03",2020,2,17,4,5,3,0,1,0,0,4870],["CBA-000443","2020-06-07",2020,4,13,2,5,1,3,1,0,0,2000],["CBA-000444","2020-06-08",2020,4,15,3,2,3,1,1,0,0,4101],["CBA-000445","2020-06-18",2020,0,8,9,5,1,0,1,0,0,2000],["CBA-000446","2020-06-21",2020,2,11,9,5,3,1,1,0,0,4000],["CBA-000447","2020-06-22",2020,3,9,6,2,6,0,1,1,0,3550],["CBA-000448","2020-06-28",2020,3,5,6,5,3,3,1,1,0,4350],["CBA-000449","2020-07-03",2020,2,11,9,4,7,3,1,0,0,6017],["CBA-000450","2020-07-07",2020,3,14,1,5,5,3,1,1,0,7000],["CBA-000451","2020-07-08",2020,1,4,1,2,1,0,1,1,0,2150],["CBA-000452","2020-07-09",2020,2,16,0,5,3,2,1,0,0,4551],["CBA-000453","2020-07-16",2020,4,1,5,3,4,2,0,0,0,5108],["CBA-000454","2020-07-25",2020,1,4,2,5,6,2,1,0,0,3550],["CBA-000455","2020-07-26",2020,4,20,4,4,1,1,1,0,0,2600],["CBA-000456","2020-08-06",2020,2,19,9,4,3,3,1,0,0,4551],["CBA-000457","2020-08-17",2020,4,1,0,5,4,2,1,1,0,5000],["CBA-000458","2020-08-22",2020,1,22,0,5,4,3,1,0,0,5108],["CBA-000459","2020-08-29",2020,4,20,9,2,6,1,1,0,0,3121],["CBA-000460","2020-09-21",2020,2,17,7,5,5,1,1,1,0,7010],["CBA-000461","2020-10-04",2020,2,11,5,4,6,0,1,0,0,3150],["CBA-000462","2020-11-03",2020,1,4,6,5,6,2,1,1,0,3121],["CBA-000463","2020-11-06",2020,4,1,8,5,1,3,1,0,0,2000],["CBA-000464","2020-11-18",2020,3,10,3,5,3,2,1,1,0,4101],["CBA-000465","2020-11-22",2020,2,17,0,5,1,3,1,0,0,2600],["CBA-000466","2020-11-28",2020,2,17,1,4,4,3,0,0,0,5108],["CBA-000467","2020-12-07",2020,2,19,4,4,7,0,1,0,0,6100]]}</script>
+<script id="cbmap" type="application/json">{"paths": {"WA": "M408.0 139.2L372.0 120.0L316.8 124.8L288.0 168.0L244.8 204.0L216.0 256.8L168.0 266.4L132.0 280.8L84.0 295.2L52.8 324.0L33.6 372.0L52.8 420.0L67.2 468.0L76.8 516.0L69.6 564.0L84.0 607.2L132.0 626.4L192.0 600.0L240.0 600.0L288.0 573.6L336.0 559.2L408.0 544.8Z", "NT": "M408.0 139.2L420.0 115.2L451.2 81.6L468.0 76.8L480.0 52.8L504.0 60.0L528.0 72.0L552.0 72.0L576.0 76.8L595.2 72.0L600.0 96.0L576.0 120.0L564.0 144.0L600.0 168.0L624.0 180.0L624.0 408.0L408.0 408.0Z", "QLD": "M624.0 180.0L648.0 199.2L684.0 208.8L708.0 156.0L708.0 84.0L732.0 40.8L756.0 127.2L792.0 144.0L816.0 228.0L864.0 264.0L900.0 324.0L936.0 360.0L984.0 396.0L996.0 460.8L998.4 480.0L696.0 480.0L696.0 408.0L624.0 408.0Z", "NSW": "M696.0 480.0L998.4 480.0L984.0 516.0L972.0 552.0L948.0 576.0L936.0 600.0L916.8 640.8L911.3 684.0L840.0 648.0L792.0 648.0L744.0 628.8L696.0 600.0Z", "VIC": "M696.0 600.0L744.0 628.8L792.0 648.0L840.0 648.0L911.3 684.0L864.0 691.2L828.0 715.2L796.8 705.6L780.0 700.8L744.0 712.8L708.0 705.6L696.0 697.4Z", "SA": "M408.0 408.0L696.0 408.0L696.0 600.0L696.0 697.4L672.0 691.2L648.0 652.8L636.0 638.4L624.0 612.0L612.0 628.8L600.0 628.8L588.0 619.2L552.0 616.8L528.0 576.0L480.0 552.0L432.0 542.4L408.0 544.8Z", "TAS": "M784.8 760.8L816.0 768.0L852.0 763.2L871.2 765.6L871.2 792.0L861.6 820.8L840.0 830.4L816.0 828.0L804.0 804.0L796.8 780.0Z", "ACT": "M882.0 627.6L898.1 627.6L898.1 646.1L885.6 646.1Z"}, "labels": {"WA": [240.0, 396.0], "NT": [516.0, 264.0], "SA": [552.0, 492.0], "QLD": [792.0, 312.0], "NSW": [828.0, 564.0], "VIC": [772.0, 678.0], "TAS": [835.2, 795.0], "ACT": [962.0, 636.0]}}</script>
+<script>
+"use strict";
+(function(){
+const RAW = JSON.parse(document.getElementById('cbdata').textContent);
+const MAPD = JSON.parse(document.getElementById('cbmap').textContent);
+const LUT = RAW.lut, ROWS = RAW.rows;
+const I = {id:0,date:1,year:2,product:3,subproduct:4,issue:5,request:6,state:7,response:8,timely:9,disputed:10,status:11,postcode:12};
+const DIMLABEL = {year:'Year',product:'Product',subproduct:'Sub-product',issue:'Issue',request:'Request type',state:'State',response:'Company response'};
+const YEARS = [...new Set(ROWS.map(r=>r[I.year]))].sort((a,b)=>a-b);
+const RELIEF = [LUT.response.indexOf('Closed with monetary relief'), LUT.response.indexOf('Closed with non-monetary relief')];
+const DIGITAL = [LUT.request.indexOf('Web'), LUT.request.indexOf('Email')].filter(x=>x>=0);
+const CLOSED = LUT.status.indexOf('Closed');
+const NS = 'http://www.w3.org/2000/svg';
+
+/* ---------- filter state ---------- */
+const F = {year:new Set(), product:new Set(), state:new Set(), request:new Set(), issue:new Set(), subproduct:new Set(), response:new Set()};
+const labelOf = (dim,code)=> dim==='year' ? String(code) : LUT[dim][code];
+const anyFilter = ()=> Object.values(F).some(s=>s.size>0);
+function match(r, skip){
+  for (const dim in F){
+    const s = F[dim];
+    if (!s.size || dim===skip) continue;
+    if (!s.has(r[I[dim]])) return false;
+  }
+  return true;
+}
+const subset = skip => ROWS.filter(r=>match(r,skip));
+
+/* ---------- measures ---------- */
+function stats(rows){
+  let timely=0, disputed=0, relief=0, closed=0, digital=0;
+  for (const r of rows){
+    if (r[I.timely]) timely++;
+    if (r[I.disputed]) disputed++;
+    if (RELIEF.includes(r[I.response])) relief++;
+    if (r[I.status]===CLOSED) closed++;
+    if (DIGITAL.includes(r[I.request])) digital++;
+  }
+  return {n:rows.length, timely, disputed, relief, closed, digital};
+}
+const BASE = stats(ROWS);
+const pct = (a,b)=> b ? (a/b*100) : 0;
+const f1 = v => (Math.round(v*10)/10).toFixed(1);
+const fnum = v => v.toLocaleString('en-AU');
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- theme colours ---------- */
+const CSS = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+let C = {};
+function readColors(){
+  C = {mark:CSS('--mark'), dim:CSS('--mark-dim'), surf:CSS('--surface-1'),
+       seq:[CSS('--seq-0'),CSS('--seq-1'),CSS('--seq-2'),CSS('--seq-3'),CSS('--seq-4'),CSS('--seq-5')]};
+}
+readColors();
+
+/* ---------- tiny SVG chart toolkit (no external library) ---------- */
+function el(tag, attrs, parent){
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k]!=null) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function niceTicks(max, target){
+  if (max<=0) return {max:1, step:1, ticks:[0,1]};
+  const raw = max/(target||4);
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1,2,2.5,5,10].map(m=>m*mag).find(s=>s>=raw) || 10*mag;
+  const top = Math.ceil(max/step)*step;
+  const ticks=[]; for(let v=0; v<=top+1e-9; v+=step) ticks.push(Math.round(v*100)/100);
+  return {max:top, step, ticks};
+}
+const tip = document.getElementById('tip');
+function showTip(ev, title, lines){
+  tip.innerHTML = `<div class="tt">${esc(title)}</div>` + lines.map(l=>`<div class="tr">${esc(l)}</div>`).join('');
+  tip.dataset.show = 'true';
+  let x = ev.clientX, y = ev.clientY;
+  if (x==null || ev.type==='focus'){ const b = ev.target.getBoundingClientRect(); x = b.left + b.width/2; y = b.top; }
+  tip.style.left = Math.max(8, Math.min(x+14, innerWidth - tip.offsetWidth - 10)) + 'px';
+  tip.style.top  = Math.max(8, y - tip.offsetHeight - 12) + 'px';
+}
+const hideTip = ()=> tip.dataset.show = 'false';
+function interactive(g, onActivate, label, ev){
+  g.setAttribute('class','item');
+  g.setAttribute('tabindex','0');
+  g.setAttribute('role','button');
+  g.setAttribute('aria-label', label);
+  g.addEventListener('click', onActivate);
+  g.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); onActivate(); }});
+  g.addEventListener('mousemove', ev); g.addEventListener('focus', ev);
+  g.addEventListener('mouseleave', hideTip); g.addEventListener('blur', hideTip);
+}
+function box(svg){
+  const r = svg.parentNode.getBoundingClientRect();
+  const w = Math.max(260, Math.round(r.width)), h = Math.max(180, Math.round(r.height));
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  return {w,h};
+}
+
+/* horizontal bars */
+function drawHBars(svg, items, opt){
+  const {w,h} = box(svg);
+  const L = Math.min(150, Math.max(76, Math.round(w*0.26))), R = 52, T = 6, B = 28;
+  const pw = w-L-R, ph = h-T-B;
+  if (!items.length || pw<40) return;
+  const max = Math.max(...items.map(d=>d.v), 1);
+  const t = niceTicks(max, w<420?3:5);
+  const sx = v => L + (v/t.max)*pw;
+  const rowH = ph/items.length;
+  const barH = Math.max(7, Math.min(38, rowH*0.66));
+  t.ticks.forEach(v=>{
+    el('line',{x1:sx(v),y1:T,x2:sx(v),y2:T+ph,class:'grid'},svg);
+    el('text',{x:sx(v),y:T+ph+16,'text-anchor':'middle'},svg).textContent = fnum(v);
+  });
+  el('line',{x1:L,y1:T,x2:L,y2:T+ph,class:'axis'},svg);
+  items.forEach((d,i)=>{
+    const cy = T + rowH*i + rowH/2;
+    const g = el('g',{},svg);
+    el('rect',{x:L,y:cy-rowH/2,width:pw,height:rowH,class:'hit'},g);
+    el('rect',{x:L, y:cy-barH/2, width:Math.max(d.v>0?2:0, sx(d.v)-L), height:barH, rx:4,
+               fill: d.on ? C.mark : C.dim},g);
+    const tx = el('text',{x:L-9,y:cy,'text-anchor':'end','dominant-baseline':'middle',class:'cat'},svg);
+    tx.textContent = d.label.length>22 ? d.label.slice(0,21)+'…' : d.label;
+    if (d.label.length>22) el('title',{},tx).textContent = d.label;
+    el('text',{x:sx(d.v)+7,y:cy,'dominant-baseline':'middle',class:'val'},svg).textContent = fnum(d.v);
+    if (opt.onPick) interactive(g, ()=>opt.onPick(d),
+      `${d.label}: ${d.v} complaints, ${f1(pct(d.v,opt.total))} percent.${d.on&&opt.selMode?' Filter active.':''} Activate to filter.`,
+      e=>showTip(e, d.label, [`${fnum(d.v)} complaint${d.v===1?'':'s'} · ${f1(pct(d.v,opt.total))}% of selection`, 'Select to filter']));
+  });
+}
+
+/* line / area */
+function drawLine(svg, pts, opt){
+  const {w,h} = box(svg);
+  const L = 42, R = 14, T = 12, B = 30;
+  const pw = w-L-R, ph = h-T-B;
+  if (!pts.length || pw<40) return;
+  const max = Math.max(...pts.map(d=>d.v), 1);
+  const t = niceTicks(max, 4);
+  const sx = i => pts.length===1 ? L+pw/2 : L + (i/(pts.length-1))*pw;
+  const sy = v => T + ph - (v/t.max)*ph;
+  t.ticks.forEach(v=>{
+    el('line',{x1:L,y1:sy(v),x2:L+pw,y2:sy(v),class:'grid'},svg);
+    el('text',{x:L-8,y:sy(v),'text-anchor':'end','dominant-baseline':'middle'},svg).textContent = fnum(v);
+  });
+  const d = pts.map((p,i)=>`${i?'L':'M'}${sx(i).toFixed(1)} ${sy(p.v).toFixed(1)}`).join('');
+  el('path',{d:`${d}L${sx(pts.length-1).toFixed(1)} ${T+ph}L${sx(0).toFixed(1)} ${T+ph}Z`, class:'area'},svg);
+  el('path',{d, class:'ln'},svg);
+  el('line',{x1:L,y1:T+ph,x2:L+pw,y2:T+ph,class:'axis'},svg);
+  const every = Math.ceil(pts.length / Math.max(2, Math.floor(pw/58)));
+  pts.forEach((p,i)=>{
+    if (i%every===0 || i===pts.length-1)
+      el('text',{x:sx(i),y:T+ph+18,'text-anchor':'middle'},svg).textContent = p.label;
+    const g = el('g',{},svg);
+    el('rect',{x:sx(i)-Math.max(9,pw/pts.length/2), y:T, width:Math.max(18,pw/pts.length), height:ph, class:'hit'},g);
+    el('circle',{cx:sx(i), cy:sy(p.v), r: pts.length>40?3.5:5, class:'pt', fill: p.on ? C.mark : C.dim},g);
+    if (opt.onPick) interactive(g, ()=>opt.onPick(p), `${p.label}: ${p.v} complaints. Activate to filter by ${p.year}.`,
+      e=>showTip(e, p.label, [`${fnum(p.v)} complaint${p.v===1?'':'s'}`, 'Select to filter by year']));
+  });
+}
+
+/* vertical bars */
+function drawVBars(svg, items, opt){
+  const {w,h} = box(svg);
+  const L = 40, R = 12, T = 24;
+  const tight = items.length ? (w-L-R)/items.length < 44 : false;   // tilt year labels when the slots get narrow
+  const B = tight ? 48 : 34;
+  const pw = w-L-R, ph = h-T-B;
+  if (!items.length || pw<40) return;
+  const max = Math.max(...items.map(d=>d.v), opt.pctScale?100:1);
+  const t = opt.pctScale ? {max:100, ticks:[0,25,50,75,100]} : niceTicks(max, 4);
+  const sy = v => T + ph - (v/t.max)*ph;
+  const slot = pw/items.length;
+  const bw = Math.max(6, Math.min(64, slot*0.6));
+  t.ticks.forEach(v=>{
+    el('line',{x1:L,y1:sy(v),x2:L+pw,y2:sy(v),class:'grid'},svg);
+    el('text',{x:L-8,y:sy(v),'text-anchor':'end','dominant-baseline':'middle'},svg).textContent = opt.pctScale? v+'%' : fnum(v);
+  });
+  el('line',{x1:L,y1:T+ph,x2:L+pw,y2:T+ph,class:'axis'},svg);
+  items.forEach((d,i)=>{
+    const cx = L + slot*i + slot/2;
+    const g = el('g',{},svg);
+    el('rect',{x:cx-slot/2,y:T,width:slot,height:ph,class:'hit'},g);
+    const bh = Math.max(d.v>0?2:0, T+ph-sy(d.v));
+    el('rect',{x:cx-bw/2, y:sy(d.v), width:bw, height:bh, rx:4, fill: d.on ? C.mark : C.dim},g);
+    el('text',{x:cx,y:sy(d.v)-7,'text-anchor':'middle',class:'val'},svg).textContent = d.text;
+    const lx = el('text',{x:cx, y:T+ph+(tight?15:20), 'text-anchor': tight?'end':'middle', class:'xlab',
+      transform: tight?`rotate(-45 ${cx} ${T+ph+15})`:null},svg);
+    lx.textContent = d.label;
+    if (opt.onPick) interactive(g, ()=>opt.onPick(d), `${d.label}: ${d.text}. Activate to filter.`,
+      e=>showTip(e, d.label, [d.tip||d.text, 'Select to filter']));
+  });
+}
+
+/* ---------- KPIs ---------- */
+const KPIS = [
+  {key:'total',    label:'Total complaints',       type:'count', good:null,
+   get:s=>s.n, sub:s=>`${f1(pct(s.n,BASE.n))}% of all 467 records`},
+  {key:'timely',   label:'Timely response rate',   type:'pct', good:1,
+   get:s=>pct(s.timely,s.n), sub:s=>`${fnum(s.timely)} of ${fnum(s.n)} answered on time`},
+  {key:'disputed', label:'Consumer disputed rate', type:'pct', good:-1,
+   get:s=>pct(s.disputed,s.n), sub:s=>`${fnum(s.disputed)} of ${fnum(s.n)} disputed the outcome`},
+  {key:'relief',   label:'Relief provided rate',   type:'pct', good:1,
+   get:s=>pct(s.relief,s.n), sub:s=>`${fnum(s.relief)} with monetary / non-monetary relief`},
+  {key:'closed',   label:'Case closure rate',      type:'pct', good:1,
+   get:s=>pct(s.closed,s.n), sub:s=>`${fnum(s.n-s.closed)} still in progress`},
+  {key:'digital',  label:'Digital intake share',   type:'pct', good:null,
+   get:s=>pct(s.digital,s.n), sub:s=>`${fnum(s.digital)} arrived via web or email`}
+];
+document.getElementById('kpis').innerHTML = KPIS.map(k=>
+  `<div class="kpi"><dt id="kpi-${k.key}-l">${k.label}</dt><dd style="margin:0">
+   <span class="val" id="kpi-${k.key}-v">—</span>
+   <span class="sub"><span id="kpi-${k.key}-s"></span><span id="kpi-${k.key}-d"></span></span></dd></div>`).join('');
+
+function renderKPIs(rows){
+  const s = stats(rows);
+  for (const k of KPIS){
+    const v = k.get(s), b = k.get(BASE);
+    document.getElementById('kpi-'+k.key+'-v').textContent = s.n||k.key==='total' ? (k.type==='pct'? f1(v)+'%' : fnum(v)) : '—';
+    document.getElementById('kpi-'+k.key+'-s').textContent = s.n ? k.sub(s) : 'no records in selection';
+    const dEl = document.getElementById('kpi-'+k.key+'-d');
+    if (!anyFilter() || k.key==='total' || !s.n){ dEl.textContent=''; dEl.className=''; continue; }
+    const r = Math.round((v-b)*10)/10;
+    let cls = 'flat';
+    if (r!==0 && k.good) cls = ((r>0) === (k.good>0)) ? 'up' : 'down';
+    dEl.className = 'delta '+cls;
+    dEl.textContent = (r>0?'▲ +':(r<0?'▼ −':'▬ ')) + f1(Math.abs(r)) + ' pts vs all';
+    dEl.title = 'Compared with the unfiltered baseline of '+f1(b)+'%';
+  }
+}
+
+/* ---------- dropdowns ---------- */
+function buildDropdown(host, dim, values){
+  host.innerHTML = `<button type="button" aria-expanded="false" aria-haspopup="true" id="btn-${dim}">
+      <span class="k">${DIMLABEL[dim]}</span><span class="v" id="val-${dim}">All</span></button>
+    <div class="ddpanel" id="panel-${dim}" role="group" aria-labelledby="btn-${dim}" hidden></div>`;
+  const btn = host.querySelector('button'), panel = host.querySelector('.ddpanel');
+  panel.innerHTML = values.map(v=>`<label class="ddopt"><input type="checkbox" value="${v.code}" id="f-${dim}-${v.code}">
+      <span>${esc(v.label)}</span><span class="cnt" data-cnt="${v.code}">0</span></label>`).join('') +
+    `<div class="ddfoot"><button type="button" class="linkbtn" data-act="all">Select all</button>
+      <button type="button" class="linkbtn" data-act="none">Clear</button></div>`;
+  function open(o){
+    host.dataset.open = o?'true':'false';
+    btn.setAttribute('aria-expanded', o?'true':'false');
+    panel.hidden = !o;
+    if (o) document.querySelectorAll('.dd').forEach(d=>{ if(d!==host){ d.dataset.open='false';
+      d.querySelector('button').setAttribute('aria-expanded','false'); d.querySelector('.ddpanel').hidden=true; }});
+  }
+  btn.addEventListener('click', ()=> open(panel.hidden));
+  btn.addEventListener('keydown', e=>{ if(e.key==='ArrowDown'){ e.preventDefault(); open(true); const f=panel.querySelector('input'); if(f) f.focus(); }});
+  panel.addEventListener('change', e=>{
+    if (e.target.type!=='checkbox') return;
+    const code = Number(e.target.value);
+    e.target.checked ? F[dim].add(code) : F[dim].delete(code);
+    update();
+  });
+  panel.addEventListener('click', e=>{
+    const act = e.target.dataset.act; if(!act) return;
+    act==='all' ? values.forEach(v=>F[dim].add(v.code)) : F[dim].clear();
+    update();
+  });
+  panel.addEventListener('keydown', e=>{
+    const list=[...panel.querySelectorAll('input')], i=list.indexOf(document.activeElement);
+    if (e.key==='Escape'){ open(false); btn.focus(); }
+    else if (e.key==='ArrowDown' && i>-1){ e.preventDefault(); (list[i+1]||list[0]).focus(); }
+    else if (e.key==='ArrowUp'){ e.preventDefault(); if(i<=0){ btn.focus(); open(false);} else list[i-1].focus(); }
+    else if (e.key==='Home'){ e.preventDefault(); list[0].focus(); }
+    else if (e.key==='End'){ e.preventDefault(); list[list.length-1].focus(); }
+  });
+  document.addEventListener('click', e=>{ if(!host.contains(e.target)) open(false); });
+  return {dim, panel, btn};
+}
+const DDS = [
+  buildDropdown(document.getElementById('dd-year'),'year', YEARS.map(y=>({code:y,label:String(y)}))),
+  buildDropdown(document.getElementById('dd-product'),'product', LUT.product.map((l,i)=>({code:i,label:l}))),
+  buildDropdown(document.getElementById('dd-state'),'state', LUT.state.map((l,i)=>({code:i,label:l})))
+];
+function syncDropdowns(){
+  for (const dd of DDS){
+    const counts = new Map();
+    for (const r of subset(dd.dim)){ const k=r[I[dd.dim]]; counts.set(k,(counts.get(k)||0)+1); }
+    dd.panel.querySelectorAll('input').forEach(inp=>{
+      const code = Number(inp.value);
+      inp.checked = F[dd.dim].has(code);
+      const n = counts.get(code)||0;
+      dd.panel.querySelector(`[data-cnt="${code}"]`).textContent = fnum(n);
+      inp.closest('.ddopt').style.opacity = n ? '1' : '.5';
+    });
+    const sel=[...F[dd.dim]], v=document.getElementById('val-'+dd.dim);
+    v.textContent = !sel.length ? 'All' : (sel.length===1 ? labelOf(dd.dim,sel[0]) : sel.length+' selected');
+    dd.btn.setAttribute('aria-label', DIMLABEL[dd.dim]+' filter: '+v.textContent);
+  }
+}
+
+/* ---------- chips ---------- */
+const chipsEl = document.getElementById('chips');
+function renderChips(){
+  const bits=[];
+  for (const dim in F) for (const code of F[dim])
+    bits.push(`<span class="chip"><span class="dim">${DIMLABEL[dim]}:</span><b>${esc(labelOf(dim,code))}</b>
+      <button type="button" data-dim="${dim}" data-code="${code}" aria-label="Remove filter ${DIMLABEL[dim]} ${esc(labelOf(dim,code))}">×</button></span>`);
+  chipsEl.innerHTML = bits.length ? bits.join('')+`<button type="button" class="resetall" id="resetall">Reset all filters</button>` : '';
+}
+chipsEl.addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if (b.id==='resetall'){ for(const d in F) F[d].clear(); update(); document.getElementById('btn-year').focus(); return; }
+  F[b.dataset.dim].delete(Number(b.dataset.code)); update();
+});
+function toggle(dim, code){ F[dim].has(code) ? F[dim].delete(code) : F[dim].add(code); update(); }
+
+/* ---------- panel 1: categorical ---------- */
+let catDim = 'request';
+function renderCat(){
+  const rows = subset(catDim);
+  const m = new Map();
+  for (const r of rows){ const k=r[I[catDim]]; m.set(k,(m.get(k)||0)+1); }
+  const codes=[...m.keys()].sort((a,b)=>m.get(b)-m.get(a));
+  const sel=F[catDim];
+  const items = codes.map(c=>({code:c, label:labelOf(catDim,c), v:m.get(c), on: !sel.size||sel.has(c)}));
+  const svg = document.getElementById('c-cat');
+  drawHBars(svg, items, {total:rows.length, selMode:sel.size>0, onPick:d=>toggle(catDim,d.code)});
+  svg.setAttribute('aria-label', `Bar chart: complaints by ${DIMLABEL[catDim].toLowerCase()}. `+
+    items.map(d=>`${d.label} ${d.v}`).join(', ')+'.');
+  document.querySelector('#card-cat .empty').hidden = items.length>0;
+  renderTable('cat', catDim, items.map(d=>({code:d.code,label:d.label,n:d.v,total:rows.length})), DIMLABEL[catDim]);
+}
+
+/* ---------- panel 2: trend ---------- */
+let gran='Y';
+const periodKey = ds => gran==='Y' ? ds.slice(0,4)
+  : gran==='Q' ? ds.slice(0,4)+' Q'+Math.ceil(Number(ds.slice(5,7))/3)
+  : ds.slice(0,7);
+function renderTrend(){
+  const rows = subset('year');
+  const m = new Map();
+  for (const r of rows){ const k=periodKey(r[I.date]); m.set(k,(m.get(k)||0)+1); }
+  let keys=[...m.keys()].sort();
+  if (gran!=='Y' && keys.length>1){            // fill gaps so a quiet month reads as zero
+    const per = gran==='Q'?4:12, spine=[];
+    const parse = k => gran==='Q' ? [Number(k.slice(0,4)),Number(k.slice(6))] : [Number(k.slice(0,4)),Number(k.slice(5,7))];
+    const make = (y,p)=> gran==='Q' ? y+' Q'+p : y+'-'+String(p).padStart(2,'0');
+    let [y,p]=parse(keys[0]); const [ye,pe]=parse(keys[keys.length-1]);
+    for (let guard=0; guard<600; guard++){ spine.push(make(y,p)); if(y===ye&&p===pe) break; p++; if(p>per){p=1;y++;} }
+    keys=spine;
+  }
+  const selY=F.year;
+  const pts = keys.map(k=>{ const yr=Number(k.slice(0,4));
+    return {label:k, year:yr, v:m.get(k)||0, on: !selY.size||selY.has(yr)}; });
+  const svg = document.getElementById('c-trend');
+  drawLine(svg, pts, {onPick:p=>toggle('year',p.year)});
+  svg.setAttribute('aria-label', `Line chart: complaints received by ${gran==='Y'?'year':gran==='Q'?'quarter':'month'}, `+
+    `${keys[0]||'n/a'} to ${keys[keys.length-1]||'n/a'}, peak ${pts.length?Math.max(...pts.map(p=>p.v)):0}.`);
+  document.querySelector('#card-trend .empty').hidden = pts.length>0;
+  renderTable('trend', gran==='Y'?'year':null,
+    pts.map(p=>({code: gran==='Y'?p.year:null, label:p.label, n:p.v, total:rows.length})), 'Period');
+}
+
+/* ---------- panel 3: map ---------- */
+const svgMap = document.getElementById('ausmap');
+const STATE_FULL = {ACT:'Australian Capital Territory',NSW:'New South Wales',NT:'Northern Territory',QLD:'Queensland',SA:'South Australia',TAS:'Tasmania',VIC:'Victoria',WA:'Western Australia'};
+const mapNodes = {};
+for (const code of Object.keys(MAPD.paths)){
+  const g = el('g',{},svgMap);
+  const p = el('path',{d:MAPD.paths[code], class:'st', tabindex:'0', role:'button', 'aria-pressed':'false'},g);
+  p.dataset.code = code;
+  if (code==='ACT') el('line',{x1:900,y1:637,x2:946,y2:631,class:'ldr'},g);
+  const t = el('text',{x:MAPD.labels[code][0], y:MAPD.labels[code][1], 'text-anchor':'middle'},g);
+  el('tspan',{},t).textContent = code;
+  const cnt = el('tspan',{x:MAPD.labels[code][0], dy:'22', 'font-weight':'700'},t);
+  mapNodes[code] = {path:p, count:cnt};
+  const idx = LUT.state.indexOf(code);
+  const act = ()=> toggle('state', idx);
+  p.addEventListener('click', act);
+  p.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); }});
+  const ev = e => showTip(e, `${STATE_FULL[code]} (${code})`,
+    [`${fnum(mapNodes[code].n||0)} complaint${mapNodes[code].n===1?'':'s'} · ${f1(pct(mapNodes[code].n||0, mapNodes[code].tot||1))}% of selection`, 'Select to filter']);
+  p.addEventListener('mousemove', ev); p.addEventListener('focus', ev);
+  p.addEventListener('mouseleave', hideTip); p.addEventListener('blur', hideTip);
+}
+const binOf = (v,max)=> !v ? 0 : Math.max(1, Math.min(5, Math.ceil(v/max*5)));
+function renderMap(){
+  const rows = subset('state');
+  const m = new Map();
+  for (const r of rows){ const k=r[I.state]; m.set(k,(m.get(k)||0)+1); }
+  const counts={}; let max=0;
+  LUT.state.forEach((s,i)=>{ counts[s]=m.get(i)||0; if(counts[s]>max) max=counts[s]; });
+  const sel = F.state;
+  for (const code of Object.keys(mapNodes)){
+    const idx=LUT.state.indexOf(code), n=counts[code]||0, node=mapNodes[code];
+    node.n=n; node.tot=rows.length;
+    node.path.setAttribute('fill', C.seq[binOf(n, max||1)]);
+    node.path.dataset.sel = sel.has(idx)?'true':'false';
+    node.path.dataset.muted = (sel.size && !sel.has(idx))?'true':'false';
+    node.path.setAttribute('aria-pressed', sel.has(idx)?'true':'false');
+    node.path.setAttribute('aria-label', `${STATE_FULL[code]}: ${n} complaints. ${sel.has(idx)?'Filter active. ':''}Activate to filter by this state.`);
+    node.count.textContent = n;
+  }
+  const step=(max||5)/5; let html='<div class="lgh">Complaints</div>';
+  for (let i=5;i>=1;i--){
+    const lo=Math.floor(step*(i-1))+1, hi=Math.ceil(step*i);
+    html += `<div class="lgi"><span class="sw" style="background:${C.seq[i]}"></span>${lo===hi?lo:lo+'–'+hi}</div>`;
+  }
+  html += `<div class="lgi"><span class="sw" style="background:${C.seq[0]}"></span>0</div>`;
+  document.getElementById('maplegend').innerHTML = html;
+  renderTable('map','state', LUT.state.map((s,i)=>({code:i,label:s,n:counts[s],total:rows.length})).sort((a,b)=>b.n-a.n), 'State');
+}
+
+/* ---------- panel 4: annual ---------- */
+let measure='count';
+function renderAnnual(){
+  const rows = subset('year');
+  const byYear = new Map();
+  for (const r of rows){ const y=r[I.year]; if(!byYear.has(y)) byYear.set(y,[]); byYear.get(y).push(r); }
+  const years = YEARS.filter(y=>byYear.has(y));
+  const sel = F.year;
+  const items = years.map(y=>{
+    const s = stats(byYear.get(y));
+    let v, text, tipTxt;
+    if (measure==='count'){ v=s.n; text=fnum(s.n); tipTxt=`${s.n} complaint${s.n===1?'':'s'}`; }
+    else if (measure==='disputed'){ v=pct(s.disputed,s.n); text=f1(v)+'%'; tipTxt=`${s.disputed} of ${s.n} disputed`; }
+    else { v=pct(s.timely,s.n); text=f1(v)+'%'; tipTxt=`${s.timely} of ${s.n} answered on time`; }
+    return {code:y, label:String(y), v, text, tip:tipTxt, on: !sel.size||sel.has(y)};
+  });
+  const svg = document.getElementById('c-annual');
+  drawVBars(svg, items, {pctScale: measure!=='count', onPick:d=>toggle('year',d.code)});
+  const mlabel = measure==='count'?'complaint volume':measure==='disputed'?'consumer disputed rate':'timely response rate';
+  svg.setAttribute('aria-label', `Bar chart: ${mlabel} by year. `+items.map(d=>`${d.label} ${d.text}`).join(', ')+'.');
+  document.querySelector('#card-annual .empty').hidden = items.length>0;
+  renderTable('annual','year', items.map(d=>({code:d.code,label:d.label,n:d.text,total:null})), 'Year');
+}
+
+/* ---------- aggregate tables (visible by default) ---------- */
+function renderTable(id, dim, items, headLabel){
+  const host = document.getElementById('tbl-'+id);
+  host.dataset.payload = JSON.stringify({dim,items,headLabel});
+  if (host.hidden) return;
+  const isText = items.length && typeof items[0].n === 'string';
+  const showShare = items.length && items[0].total!=null;
+  const body = items.map(it=>{
+    const on = dim && F[dim] && it.code!=null && F[dim].has(it.code);
+    const name = dim && it.code!=null
+      ? `<button type="button" class="rowbtn" data-dim="${dim}" data-code="${it.code}" aria-pressed="${on}">${esc(it.label)}</button>`
+      : esc(it.label);
+    const share = it.total ? f1(pct(it.n,it.total))+'%' : '';
+    return `<tr data-sel="${!!on}"><td>${name}</td><td>${typeof it.n==='number'?fnum(it.n):esc(it.n)}</td>${it.total!=null?`<td>${share}</td>`:''}</tr>`;
+  }).join('');
+  host.innerHTML = `<table class="dt"><caption>${dim?'Select a row label to filter the dashboard.':'Values for the chart above.'}</caption>
+    <thead><tr><th scope="col">${headLabel}</th><th scope="col">${isText?'Value':'Complaints'}</th>${showShare?'<th scope="col">Share</th>':''}</tr></thead>
+    <tbody>${body||'<tr><td colspan="3">No rows.</td></tr>'}</tbody></table>`;
+}
+document.addEventListener('click', e=>{
+  const t = e.target.closest('.tblbtn');
+  if (t && t.dataset.tbl){
+    const host = document.getElementById('tbl-'+t.dataset.tbl);
+    const open = host.hidden;
+    host.hidden = !open;
+    t.setAttribute('aria-expanded', String(open));
+    t.textContent = open ? 'Hide table' : 'Table';
+    if (open && host.dataset.payload){ const p=JSON.parse(host.dataset.payload); renderTable(t.dataset.tbl,p.dim,p.items,p.headLabel); }
+    return;
+  }
+  const rb = e.target.closest('.rowbtn');
+  if (rb) toggle(rb.dataset.dim, Number(rb.dataset.code));
+});
+
+/* ---------- record-level table ---------- */
+const REC_COLS = [
+  ['Complaint ID', r=>r[I.id]], ['Date received', r=>r[I.date]],
+  ['Product', r=>LUT.product[r[I.product]]], ['Sub-product', r=>LUT.subproduct[r[I.subproduct]]],
+  ['Issue', r=>LUT.issue[r[I.issue]]], ['Request type', r=>LUT.request[r[I.request]]],
+  ['State', r=>LUT.state[r[I.state]]], ['Postcode', r=>r[I.postcode]],
+  ['Company response', r=>LUT.response[r[I.response]]],
+  ['Timely', r=> r[I.timely] ? '<span class="flag yes"><span class="dot"></span>Yes</span>' : '<span class="flag no"><span class="dot"></span>No</span>'],
+  ['Disputed', r=> r[I.disputed] ? '<span class="flag no"><span class="dot"></span>Yes</span>' : '<span class="flag yes"><span class="dot"></span>No</span>'],
+  ['Status', r=>LUT.status[r[I.status]]]
+];
+const RAW_LABELS = REC_COLS.map(c=>c[0]);
+let recLimit = 100;
+function renderRecords(rows){
+  const shown = rows.slice(0, recLimit);
+  const head = `<thead><tr>${RAW_LABELS.map(l=>`<th scope="col">${l}</th>`).join('')}</tr></thead>`;
+  const body = shown.map(r=>`<tr>${REC_COLS.map(([l,fn],i)=>`<td class="${i===7?'num':''}">${i>=9&&i<=10?fn(r):esc(fn(r))}</td>`).join('')}</tr>`).join('');
+  document.getElementById('rectbl').innerHTML = head +
+    `<tbody>${body || `<tr><td colspan="${RAW_LABELS.length}">No complaints match the current filters.</td></tr>`}</tbody>`;
+  document.getElementById('rechint').textContent = anyFilter()
+    ? `${fnum(rows.length)} record${rows.length===1?'':'s'} in the current selection`
+    : `All ${fnum(rows.length)} records`;
+  const more = document.getElementById('recmore');
+  more.hidden = rows.length <= 100;
+  more.textContent = recLimit>=rows.length ? 'Show first 100' : `Show all ${fnum(rows.length)}`;
+  document.getElementById('recfoot').textContent = rows.length
+    ? `Showing ${fnum(shown.length)} of ${fnum(rows.length)} records, oldest first.` : '';
+}
+document.getElementById('recmore').addEventListener('click', ()=>{ recLimit = recLimit>=1e6 ? 100 : 1e6; update(); });
+
+/* ---------- controls ---------- */
+document.getElementById('catdim').addEventListener('change', e=>{
+  catDim = e.target.value;
+  document.getElementById('catname').textContent = DIMLABEL[catDim].toLowerCase();
+  update();
+});
+document.querySelectorAll('[data-gran]').forEach(b=> b.addEventListener('click', ()=>{
+  gran=b.dataset.gran;
+  document.querySelectorAll('[data-gran]').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+  update();
+}));
+document.querySelectorAll('[data-measure]').forEach(b=> b.addEventListener('click', ()=>{
+  measure=b.dataset.measure;
+  document.querySelectorAll('[data-measure]').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+  update();
+}));
+
+/* ---------- theme ---------- */
+const themeBtn = document.getElementById('themebtn');
+function setTheme(dark){
+  document.documentElement.dataset.theme = dark?'dark':'light';
+  themeBtn.setAttribute('aria-pressed', String(dark));
+  document.getElementById('themelbl').textContent = dark?'Light mode':'Dark mode';
+  readColors(); update();
+}
+themeBtn.addEventListener('click', ()=> setTheme(document.documentElement.dataset.theme!=='dark'));
+
+/* ---------- orchestrate ---------- */
+function update(){
+  const rows = ROWS.filter(r=>match(r,null));
+  document.getElementById('reccount').textContent = `${fnum(rows.length)} of ${fnum(BASE.n)} complaints`;
+  renderKPIs(rows);
+  syncDropdowns();
+  renderChips();
+  renderCat(); renderTrend(); renderMap(); renderAnnual();
+  renderRecords(rows);
+}
+let rAF=0;
+function redraw(){ cancelAnimationFrame(rAF); rAF=requestAnimationFrame(()=>{ renderCat(); renderTrend(); renderAnnual(); }); }
+if (window.ResizeObserver){
+  const ro = new ResizeObserver(redraw);
+  document.querySelectorAll('.plot').forEach(p=>ro.observe(p));
+} else window.addEventListener('resize', redraw);
+window.addEventListener('resize', hideTip);
+
+const stamped = document.documentElement.getAttribute('data-theme');
+let startDark = stamped ? stamped==='dark' : false;
+if (!stamped) { try { startDark = matchMedia('(prefers-color-scheme: dark)').matches; } catch(e){} }
+setTheme(startDark);
+})();
+</script>
+</body>
+</html>
